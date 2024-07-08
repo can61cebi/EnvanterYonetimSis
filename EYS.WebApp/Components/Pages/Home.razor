@@ -1,0 +1,29 @@
+﻿@page "/"
+
+@inject IIsmeGoreEnvanterleriGoruntuleUseCase IsmeGoreEnvanterleriGoruntuleUseCase
+
+<PageTitle>Test Page</PageTitle>
+
+<br />
+<br />
+
+<ul>
+    @if (envanterler != null && envanterler.Count > 0)
+    {
+        foreach(var env in envanterler)
+        {
+            <li>
+                @env.EnvanterIsim
+            </li>
+        }
+    }
+</ul>
+
+@code {
+    private List<Envanter> envanterler;
+
+    protected override async Task OnInitializedAsync()
+    {
+        envanterler = (await IsmeGoreEnvanterleriGoruntuleUseCase.ExecuteAsync()).ToList();
+    }
+}
