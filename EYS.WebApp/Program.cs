@@ -1,4 +1,4 @@
-using EYS.Plugins.InMemory;
+﻿using EYS.Plugins.InMemory;
 using EYS.UseCases.Envanterler;
 using EYS.UseCases.Envanterler.Interfaces;
 using EYS.UseCases.PluginInterfaces;
@@ -9,9 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents();
 
-builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
+builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>(); // bir kere oluşturuluyor ve lazım olduğu zaman kullanılıyor.
 
-builder.Services.AddTransient<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>();
+builder.Services.AddTransient<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>(); // çağrıldığında oluşuyor kullanılıyor ve siliniyor.
+
+// builder.Services.AddScoped<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>(); // çağrıldığında oluşuyor ve kalmaya devam ediyor.
 
 var app = builder.Build();
 

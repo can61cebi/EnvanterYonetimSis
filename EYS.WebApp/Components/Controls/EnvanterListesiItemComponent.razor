@@ -1,0 +1,18 @@
+﻿@if (this.Envanter is not null)
+{
+    <tr>
+        <td>@Envanter.EnvanterIsim</td>
+        <td>@Envanter.Adet</td>
+        <td>@Envanter.Fiyat.ToString("c")</td>
+        <td>
+            <button type="button" class="btn btn-light">
+                Düzenle
+            </button>
+        </td>
+    </tr>
+}
+
+@code {
+    [Parameter]
+    public Envanter? Envanter { get; set; }
+}

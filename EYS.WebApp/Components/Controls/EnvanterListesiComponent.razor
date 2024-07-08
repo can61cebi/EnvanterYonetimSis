@@ -1,0 +1,30 @@
+﻿@inject IIsmeGoreEnvanterleriGoruntuleUseCase IsmeGoreEnvanterleriGoruntuleUseCase
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>İsim</th>
+            <th>Adet</th>s
+            <th>Fiyat</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (envanterler is not null && envanterler.Count > 0)
+        {
+            foreach (var env in envanterler)
+            {
+                <EnvanterListesiItemComponent Envanter="env"></EnvanterListesiItemComponent>
+            }
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Envanter> envanterler;
+
+    protected override async Task OnInitializedAsync()
+    {
+        envanterler = (await IsmeGoreEnvanterleriGoruntuleUseCase.ExecuteAsync()).ToList();
+    }
+}
