@@ -7,6 +7,7 @@
 <br />
 
 <EditForm Model="envanter" FormName="formEnvanter" OnValidSubmit="Kaydet">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
 
     <div class="form-group">
         <label for="name">Envanter İsimi</label>
@@ -14,6 +15,7 @@
             @bind-Value="envanter.EnvanterIsim"
             class="form-control">
         </InputText>
+        <ValidationMessage For="() => envanter.EnvanterIsim"></ValidationMessage>
     </div>
 
     <div class="form-group">
@@ -22,6 +24,7 @@
                    @bind-Value="envanter.Adet"
                    class="form-control">
         </InputNumber>
+        <ValidationMessage For="() => envanter.Adet"></ValidationMessage>
     </div>
 
     <div class="form-group">
@@ -30,6 +33,7 @@
                      @bind-Value="envanter.Fiyat"
                      class="form-control">
         </InputNumber>
+        <ValidationMessage For="() => envanter.Fiyat"></ValidationMessage>
     </div>
 
     <br />
