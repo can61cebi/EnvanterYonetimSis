@@ -12,4 +12,16 @@
     <ProjectReference Include="..\EYS.UseCases\EYS.UseCases.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Pages\Envanterler\EnvanterEkle.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Pages\Envanterler\EnvanterEkle.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Pages\Envanterler\EnvanterEkle.razor" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
 ﻿using EYS.CoreBusiness;
+using EYS.UseCases.Envanterler;
 using EYS.UseCases.PluginInterfaces;
 
 namespace EYS.Plugins.InMemory
@@ -17,6 +18,26 @@ namespace EYS.Plugins.InMemory
                 new Envanter { EnvanterId = 4, EnvanterIsim = "Corsair Kulaklik", Adet = 1, Fiyat = 300},
             };
         }
+
+        public Task EnvanterEkleAsync(Envanter envanter)
+        {
+            if(_envanterler.Any(x=> x.EnvanterIsim.Equals(envanter.EnvanterIsim, StringComparison.OrdinalIgnoreCase)))
+            {
+                return Task.CompletedTask;
+            }
+            var maxId = _envanterler.Max(x => x.EnvanterId);
+            envanter.EnvanterId = maxId + 1;
+
+            _envanterler.Add(envanter);
+
+            return Task.CompletedTask;
+        }
+
+        public Task EnvanterEkleAsync(EnvanterEkleUseCase envanter)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<Envanter>> IsmeGoreEnvanterleriGoruntuleAsync(string name)
         {
             if (string.IsNullOrEmpty(name)) return await Task.FromResult(_envanterler);

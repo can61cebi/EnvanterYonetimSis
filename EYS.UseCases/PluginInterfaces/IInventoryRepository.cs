@@ -1,4 +1,5 @@
 ﻿using EYS.CoreBusiness;
+using EYS.UseCases.Envanterler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace EYS.UseCases.PluginInterfaces
 {
     public interface IInventoryRepository
     {
+        Task EnvanterEkleAsync(EnvanterEkleUseCase envanter);
+        Task EnvanterEkleAsync(Envanter envanter);
         Task<IEnumerable<Envanter>> IsmeGoreEnvanterleriGoruntuleAsync(string name);
     }
 }

@@ -1,0 +1,51 @@
+﻿@page "/envanterekle"
+
+@inject IEnvanterEkleUseCase EnvanterEkleUseCase;
+
+<h3>Envanter Ekle</h3>
+
+<br />
+
+<EditForm Model="envanter" FormName="formEnvanter" OnValidSubmit="Kaydet">
+
+    <div class="form-group">
+        <label for="name">Envanter İsimi</label>
+        <InputText id="isim"
+            @bind-Value="envanter.EnvanterIsim"
+            class="form-control">
+        </InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="adet">Envanter Adeti</label>
+        <InputNumber id="adet"
+                   @bind-Value="envanter.Adet"
+                   class="form-control">
+        </InputNumber>
+    </div>
+
+    <div class="form-group">
+        <label for="fiyat">Envanter Fiyatı</label>
+        <InputNumber id="fiyat"
+                     @bind-Value="envanter.Fiyat"
+                     class="form-control">
+        </InputNumber>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+</EditForm>
+
+@code {
+
+    [SupplyParameterFromForm]
+    private Envanter envanter { get; set; } = new Envanter();
+
+    private async Task Kaydet()
+    {
+        await EnvanterEkleUseCase.ExecuteAsync(envanter);
+    }
+
+}

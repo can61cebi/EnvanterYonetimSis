@@ -13,6 +13,8 @@ builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>(); // b
 
 builder.Services.AddTransient<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>(); // çağrıldığında oluşuyor kullanılıyor ve siliniyor.
 
+builder.Services.AddTransient<IEnvanterEkleUseCase, EnvanterEkleUseCase>();
+
 // builder.Services.AddScoped<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>(); // çağrıldığında oluşuyor ve kalmaya devam ediyor.
 
 var app = builder.Build();
