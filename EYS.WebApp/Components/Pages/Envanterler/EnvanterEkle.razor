@@ -1,6 +1,7 @@
 ﻿@page "/envanterekle"
 
 @inject IEnvanterEkleUseCase EnvanterEkleUseCase;
+@inject NavigationManager NavigationManager
 
 <h3>Envanter Ekle</h3>
 
@@ -39,6 +40,8 @@
     <br />
 
     <button type="submit" class="btn btn-primary">Kaydet</button>
+    &nbsp;
+    <a href="/envanterler" class="btn btn-light">Geri Dön</a>
 
 </EditForm>
 
@@ -50,6 +53,8 @@
     private async Task Kaydet()
     {
         await EnvanterEkleUseCase.ExecuteAsync(envanter);
+
+        NavigationManager.NavigateTo("/envanterler");
     }
 
 }
