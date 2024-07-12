@@ -1,6 +1,7 @@
 ﻿@page "/"
 
 @inject IIsmeGoreEnvanterleriGoruntuleUseCase IsmeGoreEnvanterleriGoruntuleUseCase
+@inject IEnvanterDuzenleUseCase EnvanterDuzenleUseCase
 
 <PageTitle>Test Page</PageTitle>
 
@@ -24,6 +25,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var envanter = new Envanter { EnvanterId = 2, EnvanterIsim = "Asus Laptop", Adet = 50, Fiyat = 12 };
+
+        await EnvanterDuzenleUseCase.ExecuteAsync(envanter);
+
         envanterler = (await IsmeGoreEnvanterleriGoruntuleUseCase.ExecuteAsync()).ToList();
     }
 }

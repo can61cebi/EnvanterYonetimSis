@@ -15,6 +15,7 @@ builder.Services.AddTransient<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnv
 
 builder.Services.AddTransient<IEnvanterEkleUseCase, EnvanterEkleUseCase>();
 
+builder.Services.AddTransient<IEnvanterDuzenleUseCase, EnvanterDuzenleUseCase>();
 // builder.Services.AddScoped<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>(); // çağrıldığında oluşuyor ve kalmaya devam ediyor.
 
 var app = builder.Build();

@@ -17,11 +17,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Pages\Envanterler\EnvanterDuzenle.razor" />
     <_ContentIncludedByDefault Remove="Components\Pages\Envanterler\EnvanterEkle.razor" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Components\Pages\Envanterler\EnvanterDuzenle.razor" />
     <None Include="Components\Pages\Envanterler\EnvanterEkle.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Pages\Envanterler\EnvanterDuzenle.razor" />
   </ItemGroup>
 
 </Project>

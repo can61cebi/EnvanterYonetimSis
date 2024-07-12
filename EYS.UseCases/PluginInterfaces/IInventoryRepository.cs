@@ -12,6 +12,8 @@ namespace EYS.UseCases.PluginInterfaces
     {
         Task EnvanterEkleAsync(EnvanterEkleUseCase envanter);
         Task EnvanterEkleAsync(Envanter envanter);
+        Task EnvanterGuncelleAsync(EnvanterDuzenleUseCase envanter);
+        Task EnvanterGuncelleAsync(Envanter envanter);
         Task<IEnumerable<Envanter>> IsmeGoreEnvanterleriGoruntuleAsync(string name);
     }
 }

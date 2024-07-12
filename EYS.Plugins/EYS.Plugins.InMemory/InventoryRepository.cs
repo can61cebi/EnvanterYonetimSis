@@ -38,6 +38,29 @@ namespace EYS.Plugins.InMemory
             throw new NotImplementedException();
         }
 
+        public Task EnvanterGuncelleAsync(Envanter envanter)
+        {
+            var guncelEnvanter = _envanterler.FirstOrDefault(x => x.EnvanterId == envanter.EnvanterId);
+
+            if(_envanterler.Any(x => x.EnvanterId != envanter.EnvanterId &&
+            x.EnvanterIsim.Equals(envanter.EnvanterIsim, StringComparison.OrdinalIgnoreCase)))
+                { return Task.CompletedTask; }
+
+            if (guncelEnvanter != null)
+            {
+                guncelEnvanter.EnvanterIsim = envanter.EnvanterIsim;
+                guncelEnvanter.Adet = envanter.Adet;
+                guncelEnvanter.Fiyat = envanter.Fiyat;
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public Task EnvanterGuncelleAsync(EnvanterDuzenleUseCase envanter)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<Envanter>> IsmeGoreEnvanterleriGoruntuleAsync(string name)
         {
             if (string.IsNullOrEmpty(name)) return await Task.FromResult(_envanterler);
