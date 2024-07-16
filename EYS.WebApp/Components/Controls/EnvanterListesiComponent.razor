@@ -23,8 +23,11 @@
 @code {
     private List<Envanter> envanterler;
 
+    [Parameter]
+    public string? EnvanterAramaFiltresi { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        envanterler = (await IsmeGoreEnvanterleriGoruntuleUseCase.ExecuteAsync()).ToList();
+        envanterler = (await IsmeGoreEnvanterleriGoruntuleUseCase.ExecuteAsync(EnvanterAramaFiltresi??string.Empty)).ToList();
     }
 }
