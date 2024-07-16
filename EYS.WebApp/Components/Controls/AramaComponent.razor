@@ -1,0 +1,22 @@
+﻿<EditForm Model="aramaFiltresi" FormName="aramaFormu" OnSubmit="Ara">
+    <div class="input-group">
+        <InputText class="form-control"
+                   placeholder="Aramak için envanter ismi girin"
+                   @bind-Value="this.aramaFiltresi">
+        </InputText>
+        <button type="submit" class="btn-success input-group-text">Ara</button>
+    </div>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    private string aramaFiltresi { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> AramaYap { get; set; }
+
+    private void Ara()
+    {
+        AramaYap.InvokeAsync(aramaFiltresi);
+    }
+}

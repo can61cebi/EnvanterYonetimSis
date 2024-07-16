@@ -4,12 +4,21 @@
 
 <br />
 
-<EnvanterListesiComponent EnvanterAramaFiltresi=""></EnvanterListesiComponent>
+<AramaComponent AramaYap="KelimeAra"></AramaComponent>
+
+<br />
+
+<EnvanterListesiComponent EnvanterAramaFiltresi="@envanterIsimArama"></EnvanterListesiComponent>
 
 <br />
 
 <a href="/envanterekle" class="btn btn-primary">Envanter Ekle</a>
 
 @code {
+    private string? envanterIsimArama;
 
+    private void KelimeAra(string aramaFiltresi)
+    {
+        envanterIsimArama = aramaFiltresi;
+    }
 }

@@ -26,8 +26,8 @@
     [Parameter]
     public string? EnvanterAramaFiltresi { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        envanterler = (await IsmeGoreEnvanterleriGoruntuleUseCase.ExecuteAsync(EnvanterAramaFiltresi??string.Empty)).ToList();
+        envanterler = (await IsmeGoreEnvanterleriGoruntuleUseCase.ExecuteAsync(EnvanterAramaFiltresi ?? string.Empty)).ToList();
     }
 }

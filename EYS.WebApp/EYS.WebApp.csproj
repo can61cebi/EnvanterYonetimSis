@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Components\Controls\AramaComponent.razor" />
     <None Include="Components\Pages\Envanterler\EnvanterDuzenle.razor" />
     <None Include="Components\Pages\Envanterler\EnvanterEkle.razor" />
   </ItemGroup>
