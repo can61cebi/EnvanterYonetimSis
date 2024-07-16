@@ -18,6 +18,8 @@ builder.Services.AddTransient<IEnvanterEkleUseCase, EnvanterEkleUseCase>();
 builder.Services.AddTransient<IEnvanterDuzenleUseCase, EnvanterDuzenleUseCase>();
 // builder.Services.AddScoped<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>(); // çağrıldığında oluşuyor ve kalmaya devam ediyor.
 
+builder.Services.AddTransient<IIDyeGoreEnvanterGoruntuleUseCase, IDyeGoreEnvanterGoruntuleUseCase>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

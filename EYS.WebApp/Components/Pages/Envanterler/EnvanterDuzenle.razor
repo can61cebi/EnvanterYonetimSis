@@ -1,10 +1,72 @@
-﻿@page "/envanterduzenle/{InvId:int}"
+﻿@page "/envanterduzenle/{EnvId:int}"
+
+@inject NavigationManager NavigationManager
+@inject IIDyeGoreEnvanterGoruntuleUseCase IDyeGoreEnvanterGoruntuleUseCase
+@inject IEnvanterDuzenleUseCase EnvanterDuzenleUseCase
 
 <h3>Envanter Düzenle</h3>
 <br />
+@if (this.envanter is not null)
+{
+    <EditForm Model="envanter" FormName="formEnvanter" OnValidSubmit="Guncelle">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
 
-@InvId
+        <InputNumber @bind-Value="envanter.EnvanterId" hidden></InputNumber>
+
+        <div class="form-group">
+            <label for="name">Envanter İsimi</label>
+            <InputText id="isim"
+                       @bind-Value="envanter.EnvanterIsim"
+                       class="form-control">
+            </InputText>
+            <ValidationMessage For="() => envanter.EnvanterIsim"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="adet">Envanter Adeti</label>
+            <InputNumber id="adet"
+                         @bind-Value="envanter.Adet"
+                         class="form-control">
+            </InputNumber>
+            <ValidationMessage For="() => envanter.Adet"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="fiyat">Envanter Fiyatı</label>
+            <InputNumber id="fiyat"
+                         @bind-Value="envanter.Fiyat"
+                         class="form-control">
+            </InputNumber>
+            <ValidationMessage For="() => envanter.Fiyat"></ValidationMessage>
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-primary">Güncelle</button>
+        &nbsp;
+        <a href="/envanterler" class="btn btn-secondary">Geri Dön</a>
+
+    </EditForm>
+}
+
 @code {
     [Parameter]
-    public int InvId { get; set; }
+    public int EnvId { get; set; }
+
+    [SupplyParameterFromForm]
+    private Envanter? envanter { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.envanter ??= await IDyeGoreEnvanterGoruntuleUseCase.ExecuteAsync(this.EnvId);
+    }
+
+    private async Task Guncelle()
+    {
+        if (envanter is not null)
+        {
+            await EnvanterDuzenleUseCase.ExecuteAsync(envanter);
+            NavigationManager.NavigateTo("/envanterler");
+        }
+    }
 }

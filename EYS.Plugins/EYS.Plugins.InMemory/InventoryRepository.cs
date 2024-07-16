@@ -61,6 +61,11 @@ namespace EYS.Plugins.InMemory
             throw new NotImplementedException();
         }
 
+        public async Task<Envanter> IDdenEnvanterBulAsync(int envanterID)
+        {
+            return await Task.FromResult(_envanterler.First(x => x.EnvanterId == envanterID));
+        }
+
         public async Task<IEnumerable<Envanter>> IsmeGoreEnvanterleriGoruntuleAsync(string name)
         {
             if (string.IsNullOrEmpty(name)) return await Task.FromResult(_envanterler);
