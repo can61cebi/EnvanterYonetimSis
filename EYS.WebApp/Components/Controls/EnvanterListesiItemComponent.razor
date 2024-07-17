@@ -1,4 +1,7 @@
-﻿@if (this.Envanter is not null)
+﻿@inject NavigationManager NavigationManager
+@inject IEnvanterSilUseCase EnvanterSilUseCase
+
+@if (this.Envanter is not null)
 {
     <tr>
         <td>@Envanter.EnvanterIsim</td>
@@ -10,10 +13,25 @@
                 Düzenle
             </a>
         </td>
+        <td>
+        <EditForm Enhance="true" Model="Envanter"
+            FormName="@($"form-sil-envanter-{Envanter.EnvanterId}")"
+        OnValidSubmit="() => EnvanterSil(Envanter.EnvanterId)">
+            <button type="submit" class="btn btn-danger">
+                Delete
+            </button>
+        </EditForm>
+        </td>
     </tr>
 }
 
 @code {
     [Parameter]
     public Envanter? Envanter { get; set; }
+
+    private async Task EnvanterSil(int envanterId)
+    {
+        await EnvanterSilUseCase.ExecuteAsync(envanterId);
+        NavigationManager.Refresh();
+    }
 }

@@ -20,6 +20,8 @@ builder.Services.AddTransient<IEnvanterDuzenleUseCase, EnvanterDuzenleUseCase>()
 
 builder.Services.AddTransient<IIDyeGoreEnvanterGoruntuleUseCase, IDyeGoreEnvanterGoruntuleUseCase>();
 
+builder.Services.AddTransient<IEnvanterSilUseCase, EnvanterSilUseCase>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

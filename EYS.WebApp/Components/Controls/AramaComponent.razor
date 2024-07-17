@@ -1,4 +1,9 @@
-﻿<EditForm Model="aramaFiltresi" FormName="aramaFormu" OnSubmit="Ara">
+﻿@if (aramaFiltresi is null)
+{
+    aramaFiltresi = string.Empty;
+}
+
+<EditForm Enhance="true" Model="aramaFiltresi" FormName="aramaFormu" OnSubmit="Ara">
     <div class="input-group">
         <InputText class="form-control"
                    placeholder="Aramak için envanter ismi girin"

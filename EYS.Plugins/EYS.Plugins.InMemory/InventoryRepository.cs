@@ -66,6 +66,16 @@ namespace EYS.Plugins.InMemory
             return await Task.FromResult(_envanterler.First(x => x.EnvanterId == envanterID));
         }
 
+        public Task IDyeGoreEnvanterSilAsync(int envanterID)
+        {
+            var envanter = _envanterler.FirstOrDefault(x => x.EnvanterId == envanterID);
+            if (envanter != null)
+            {
+                _envanterler.Remove(envanter);
+            }
+            return Task.CompletedTask;
+        }
+
         public async Task<IEnumerable<Envanter>> IsmeGoreEnvanterleriGoruntuleAsync(string name)
         {
             if (string.IsNullOrEmpty(name)) return await Task.FromResult(_envanterler);
