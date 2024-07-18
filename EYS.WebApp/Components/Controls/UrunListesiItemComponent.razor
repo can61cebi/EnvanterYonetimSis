@@ -1,0 +1,34 @@
+﻿@inject NavigationManager NavigationManager
+@inject IUrunSilUseCase UrunSilUseCase
+
+@if (this.Urun is not null)
+{
+    <tr>
+        <td>@Urun.UrunIsim</td>
+        <td>@Urun.Adet</td>
+        <td>@Urun.Fiyat.ToString("c")</td>
+        <td>
+            <a class="btn btn-light"
+                href="/urunduzenle/@Urun.UrunId">
+                Düzenle
+            </a>
+        </td>
+        <td>
+            <button
+                type="button"
+                class="btn btn-light"
+            @onclick="async () => { await SilmeIslemi(Urun.UrunId); }">Sil</button>
+        </td>
+    </tr>
+}
+
+@code {
+    [Parameter]
+    public Urun? Urun { get; set; }
+
+    private async Task SilmeIslemi(int urunId)
+    {
+        UrunSilUseCase.ExecuteAsync(urunId);
+        this.Urun = null;
+    }
+}

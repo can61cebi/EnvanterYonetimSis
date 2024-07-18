@@ -1,0 +1,24 @@
+﻿@page "/urunler"
+
+<h3>Urun Listesi</h3>
+
+<br />
+
+<AramaComponent AramaYap="KelimeAra"></AramaComponent>
+
+<br />
+
+<UrunListesiComponent UrunAramaFiltresi="@urunIsimArama"></UrunListesiComponent>
+
+<br />
+
+<a href="/urunekle" class="btn btn-primary">Urun Ekle</a>
+
+@code {
+    private string? urunIsimArama;
+
+    private void KelimeAra(string aramaFiltresi)
+    {
+        urunIsimArama = aramaFiltresi;
+    }
+}
