@@ -2,6 +2,7 @@
 using EYS.UseCases.Envanterler;
 using EYS.UseCases.Envanterler.Interfaces;
 using EYS.UseCases.PluginInterfaces;
+using EYS.UseCases.Urunler;
 using EYS.WebApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,17 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents();
 
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>(); // bir kere oluşturuluyor ve lazım olduğu zaman kullanılıyor.
+builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 
 builder.Services.AddTransient<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>(); // çağrıldığında oluşuyor kullanılıyor ve siliniyor.
-
 builder.Services.AddTransient<IEnvanterEkleUseCase, EnvanterEkleUseCase>();
-
 builder.Services.AddTransient<IEnvanterDuzenleUseCase, EnvanterDuzenleUseCase>();
 // builder.Services.AddScoped<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>(); // çağrıldığında oluşuyor ve kalmaya devam ediyor.
-
 builder.Services.AddTransient<IIDyeGoreEnvanterGoruntuleUseCase, IDyeGoreEnvanterGoruntuleUseCase>();
-
 builder.Services.AddTransient<IEnvanterSilUseCase, EnvanterSilUseCase>();
+
+builder.Services.AddTransient<IIsmeGoreUrunleriGoruntuleUseCase, IsmeGoreUrunleriGoruntuleUseCase>();
 
 var app = builder.Build();
 
