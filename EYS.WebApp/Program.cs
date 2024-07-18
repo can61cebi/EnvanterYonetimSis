@@ -22,6 +22,9 @@ builder.Services.AddTransient<IEnvanterSilUseCase, EnvanterSilUseCase>();
 
 builder.Services.AddTransient<IIsmeGoreUrunleriGoruntuleUseCase, IsmeGoreUrunleriGoruntuleUseCase>();
 builder.Services.AddTransient<IUrunSilUseCase, UrunSilUseCase>();
+builder.Services.AddTransient<IUrunEkleUseCase, UrunEkleUseCase>();
+builder.Services.AddTransient<IUrunDuzenleUseCase, UrunDuzenleUseCase>();
+builder.Services.AddTransient<IIDyeGoreUrunGoruntuleUseCase, IDyeGoreUrunGoruntuleUseCase>();
 
 var app = builder.Build();
 
