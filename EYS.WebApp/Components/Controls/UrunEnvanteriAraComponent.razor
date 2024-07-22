@@ -1,0 +1,45 @@
+﻿@inject IIsmeGoreEnvanterleriGoruntuleUseCase IsmeGoreEnvanterleriGoruntuleUseCase;
+
+<div class="input-group">
+    <input class="form-control"
+               placeholder="Aramak için envanter ismi girin"
+               @bind-value="this.aramaFiltresi" @bind-value:event="oninput">
+    </input>
+    <button type="button" class="btn-success input-group-text" @onclick="AramaYap">Ara</button>
+</div>
+@if (envanterler is not null && envanterler.Count > 0)
+{
+    <div class="arama-sonuc">
+        <ul>
+            @foreach(var env in envanterler)
+            {
+                <li @key="env.EnvanterId">
+                    @env.EnvanterIsim
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    private string _aramaFiltresi;
+    private string aramaFiltresi
+    {
+        get => _aramaFiltresi;
+        set
+        {
+            _aramaFiltresi = value;
+            AramaYap();
+        }
+    }
+
+    private List<Envanter> envanterler = new List<Envanter>();
+
+    private async Task AramaYap()
+    {
+        await Task.Delay(500); // uzun database cekiyormus gibi simule ediyoruz
+        envanterler = (await IsmeGoreEnvanterleriGoruntuleUseCase.ExecuteAsync(this.aramaFiltresi)).ToList();
+
+        StateHasChanged();
+    }
+}
