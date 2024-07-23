@@ -11,6 +11,7 @@
 
 <EditForm Model="urun" OnValidSubmit="Kaydet">
     <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
 
     <div class="form-group">
         <label for="name">Urun İsimi</label>
@@ -41,7 +42,7 @@
 
     <div class="form-group">
         <label for="fiyat">Envanterler</label>
-        <UrunEnvanteriAraComponent></UrunEnvanteriAraComponent>
+        <UrunEnvanterleriComponent Urun="this.urun"></UrunEnvanterleriComponent>
     </div>
 
     <br />

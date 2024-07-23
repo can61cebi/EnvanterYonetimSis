@@ -11,9 +11,12 @@
 {
     <div class="arama-sonuc">
         <ul>
-            @foreach(var env in envanterler)
+            @foreach (var env in envanterler)
             {
-                <li @key="env.EnvanterId">
+                <li
+                @key="env.EnvanterId"
+                    @onclick="() => { EnvanterSecmeYap(env); }">
+                >
                     @env.EnvanterIsim
                 </li>
             }
@@ -22,6 +25,9 @@
 }
 
 @code {
+    [Parameter]
+    public EventCallback<Envanter> OnEnvanterSecildi { get; set; }
+
     private string _aramaFiltresi;
     private string aramaFiltresi
     {
@@ -41,5 +47,11 @@
         envanterler = (await IsmeGoreEnvanterleriGoruntuleUseCase.ExecuteAsync(this.aramaFiltresi)).ToList();
 
         StateHasChanged();
+    }
+
+    private async Task EnvanterSecmeYap(Envanter envanter)
+    {
+        await OnEnvanterSecildi.InvokeAsync(envanter);
+        envanterler.Clear();
     }
 }

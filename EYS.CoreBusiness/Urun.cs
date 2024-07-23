@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EYS.CoreBusiness.Dogrulamalar;
+using System.ComponentModel.DataAnnotations;
 
 namespace EYS.CoreBusiness
 {
@@ -15,5 +16,31 @@ namespace EYS.CoreBusiness
 
         [Range(0, int.MaxValue, ErrorMessage = "Fiyat 0 ya da daha büyük olmalıdır.")]
         public double Fiyat { get; set; }
+
+        [Urun_FiyatinEnvanterdenYuksekOldugunuDogrula]
+
+        public List<UrunEnvanter> UrunEnvanterleri { get; set; } = new List<UrunEnvanter>();
+
+        public void EnvanterEkle(Envanter envanter)
+        {
+            if (!this.UrunEnvanterleri.Any(
+                x => x.Envanter is not null &&
+                x.Envanter.EnvanterIsim.Equals(envanter.EnvanterIsim)))
+            {
+                this.UrunEnvanterleri.Add(new UrunEnvanter
+                {
+                    EnvanterId = envanter.EnvanterId,
+                    Envanter = envanter,
+                    EnvanterAdeti = 1,
+                    UrunId = this.UrunId,
+                    Urun = this
+                });
+            }  
+        }
+        
+        public void EnvanterSil(UrunEnvanter urunEnvanter)
+        {
+            this.UrunEnvanterleri?.Remove(urunEnvanter);
+        }
     }
 }

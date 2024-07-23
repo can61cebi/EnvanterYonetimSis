@@ -1,0 +1,50 @@
+﻿<div class="card">
+    <div class="card-body">
+
+<UrunEnvanteriAraComponent OnEnvanterSecildi="EnvanterSecildigindeYap"></UrunEnvanteriAraComponent>
+@if (this.Urun is not null &&
+this.Urun.UrunEnvanterleri is not null &&
+this.Urun.UrunEnvanterleri.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>İsim</th>
+                <th>Adet</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var urunEnvateri in this.Urun.UrunEnvanterleri)
+            {
+                <tr>
+                    <td>@urunEnvateri.Envanter?.EnvanterIsim</td>
+                    <td>
+                        <input type="number" min="0" @bind-value="urunEnvateri.EnvanterAdeti" />
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" @onclick="() => EnvanterSil(urunEnvateri)">Sil</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+    </div>
+</div>
+@code {
+
+    [Parameter]
+    public Urun? Urun { get; set; }
+
+    private void EnvanterSil(UrunEnvanter urunEnvanter)
+    {
+        this.Urun?.EnvanterSil(urunEnvanter);
+    }
+
+    private void EnvanterSecildigindeYap(Envanter envanter)
+    {
+        this.Urun?.EnvanterEkle(envanter);
+    }
+}
