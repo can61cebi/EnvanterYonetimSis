@@ -19,7 +19,7 @@ namespace EYS.Plugins.InMemory
 
         public Task UrunEkleAsync(Urun urun)
         {
-            if(_urunler.Any(x=> x.UrunIsim.Equals(urun.UrunIsim, StringComparison.OrdinalIgnoreCase)))
+            if (_urunler.Any(x => x.UrunIsim.Equals(urun.UrunIsim, StringComparison.OrdinalIgnoreCase)))
             {
                 return Task.CompletedTask;
             }
@@ -33,25 +33,55 @@ namespace EYS.Plugins.InMemory
 
         public Task UrunGuncelleAsync(Urun urun)
         {
-            var guncelUrun = _urunler.FirstOrDefault(x => x.UrunId == urun.UrunId);
+            if (_urunler.Any(x => x.UrunId != urun.UrunId &&
+            x.UrunIsim.ToLower() == urun.UrunIsim.ToLower())) return Task.CompletedTask;
 
-            if(_urunler.Any(x => x.UrunId != urun.UrunId &&
-            x.UrunIsim.Equals(urun.UrunIsim, StringComparison.OrdinalIgnoreCase)))
-                { return Task.CompletedTask; }
-
-            if (guncelUrun != null)
+            var urn = _urunler.FirstOrDefault(x => x.UrunId == urun.UrunId);
+            if (urn is not null)
             {
-                guncelUrun.UrunIsim = urun.UrunIsim;
-                guncelUrun.Adet = urun.Adet;
-                guncelUrun.Fiyat = urun.Fiyat;
+                urn.UrunIsim = urun.UrunIsim;
+                urn.Adet = urun.Adet;
+                urn.Fiyat = urun.Fiyat;
+                urn.UrunEnvanterleri = urun.UrunEnvanterleri;
             }
-
             return Task.CompletedTask;
         }
 
         public async Task<Urun> IDdenUrunBulAsync(int urunID)
         {
-            return await Task.FromResult(_urunler.First(x => x.UrunId == urunID));
+            var urn = _urunler.FirstOrDefault(x => x.UrunId == urunID);
+            var yeniUrun = new Urun();
+            if (urn != null)
+            {
+                yeniUrun.UrunId = urn.UrunId;
+                yeniUrun.UrunIsim = urn.UrunIsim;
+                yeniUrun.Adet = urn.Adet;
+                yeniUrun.Fiyat = urn.Fiyat;
+                yeniUrun.UrunEnvanterleri = new List<UrunEnvanter>();
+                if (urn.UrunEnvanterleri != null && urn.UrunEnvanterleri.Count > 0)
+                {
+                    foreach (var urunEnvanter in urn.UrunEnvanterleri)
+                    {
+                        var yeniUrunEnvanter = new UrunEnvanter
+                        {
+                            EnvanterId = urunEnvanter.EnvanterId,
+                            UrunId = urunEnvanter.UrunId,
+                            Urun = urn,
+                            Envanter = new Envanter(),
+                            EnvanterAdeti = urunEnvanter.EnvanterAdeti
+                        };
+                        if (urunEnvanter.Envanter != null)
+                        {
+                            yeniUrunEnvanter.Envanter.EnvanterId = urunEnvanter.Envanter.EnvanterId;
+                            yeniUrunEnvanter.Envanter.EnvanterIsim = urunEnvanter.Envanter.EnvanterIsim;
+                            yeniUrunEnvanter.Envanter.Adet = urunEnvanter.Envanter.Adet;
+                            yeniUrunEnvanter.Envanter.Fiyat = urunEnvanter.Envanter.Fiyat;
+                        }
+                        yeniUrun.UrunEnvanterleri.Add(yeniUrunEnvanter);
+                    }
+                }
+            }
+            return await Task.FromResult(yeniUrun);
         }
 
         public Task IDyeGoreUrunSilAsync(int urunID)

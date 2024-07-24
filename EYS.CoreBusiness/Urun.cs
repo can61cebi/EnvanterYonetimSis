@@ -18,7 +18,6 @@ namespace EYS.CoreBusiness
         public double Fiyat { get; set; }
 
         [Urun_FiyatinEnvanterdenYuksekOldugunuDogrula]
-
         public List<UrunEnvanter> UrunEnvanterleri { get; set; } = new List<UrunEnvanter>();
 
         public void EnvanterEkle(Envanter envanter)
@@ -41,6 +40,7 @@ namespace EYS.CoreBusiness
         public void EnvanterSil(UrunEnvanter urunEnvanter)
         {
             this.UrunEnvanterleri?.Remove(urunEnvanter);
+            Console.WriteLine("2");
         }
     }
 }

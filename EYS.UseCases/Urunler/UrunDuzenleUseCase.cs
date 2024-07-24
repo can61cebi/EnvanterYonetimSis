@@ -17,8 +17,6 @@ namespace EYS.UseCases.Urunler
             this.productRepository = productRepository;
         }
 
-        public int UrunId { get; set; }
-
         public async Task ExecuteAsync(Urun urun)
         {
             await this.productRepository.UrunGuncelleAsync(urun);
