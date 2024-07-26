@@ -1,4 +1,5 @@
 ﻿using EYS.Plugins.InMemory;
+using EYS.UseCases.Aksiyonlar;
 using EYS.UseCases.Envanterler;
 using EYS.UseCases.Envanterler.Interfaces;
 using EYS.UseCases.PluginInterfaces;
@@ -12,6 +13,7 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>(); // bir kere oluşturuluyor ve lazım olduğu zaman kullanılıyor.
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<IInventoryTransactionRepository, InventoryTransactionRepository>();
 
 builder.Services.AddTransient<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>(); // çağrıldığında oluşuyor kullanılıyor ve siliniyor.
 builder.Services.AddTransient<IEnvanterEkleUseCase, EnvanterEkleUseCase>();
@@ -25,6 +27,8 @@ builder.Services.AddTransient<IUrunSilUseCase, UrunSilUseCase>();
 builder.Services.AddTransient<IUrunEkleUseCase, UrunEkleUseCase>();
 builder.Services.AddTransient<IUrunDuzenleUseCase, UrunDuzenleUseCase>();
 builder.Services.AddTransient<IIDyeGoreUrunGoruntuleUseCase, IDyeGoreUrunGoruntuleUseCase>();
+
+builder.Services.AddTransient<IEnvanterSatinAlUseCase, EnvanterSatinAlUseCase>();
 
 var app = builder.Build();
 
