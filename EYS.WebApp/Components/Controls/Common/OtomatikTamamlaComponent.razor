@@ -1,0 +1,54 @@
+﻿<div class="form-group">
+    <label for="search">@Label</label>
+    <input
+        type="text"
+        class="form-control"
+        @bind-value="userInput"
+        @bind-value:event="oninput"/>
+
+</div>
+
+@if (aramaSonuclari != null && aramaSonuclari.Count > 0)
+{
+    <div class="arama-sonuc">
+        <ul>
+            @foreach (var urn in aramaSonuclari)
+            {
+                <li @key="urn.Id">
+                    @urn.Name
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+
+    private List<ItemViewModel>? aramaSonuclari = null;
+
+    [Parameter]
+    public Func<string, List<ItemViewModel>>? AramaFonksiyon { get; set; }
+
+    private string _userInput = string.Empty;
+    public string userInput
+    {
+        get => _userInput;
+        set
+        {
+            _userInput = value;
+
+            if (!string.IsNullOrWhiteSpace(_userInput) && AramaFonksiyon != null)
+            {
+                aramaSonuclari = AramaFonksiyon(_userInput);
+            }
+        }
+    }
+
+    public class ItemViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+    }
+}

@@ -10,10 +10,10 @@ namespace EYS.Plugins.InMemory
 {
     public class InventoryTransactionRepository : IInventoryTransactionRepository
     {
-        public List<EnvanterIslem> _inventoryTransactions = new List<EnvanterIslem>();
+        public List<EnvanterIslem> _envanterIslemler = new List<EnvanterIslem>();
         public void SatinAlAsync(string almaSayisi, Envanter envanter, int adet, string alanKisi, double fiyat)
         {
-            this._inventoryTransactions.Add(new EnvanterIslem
+            this._envanterIslemler.Add(new EnvanterIslem
             {
                 almaSayisi = almaSayisi,
                 EnvanterId = envanter.EnvanterId,

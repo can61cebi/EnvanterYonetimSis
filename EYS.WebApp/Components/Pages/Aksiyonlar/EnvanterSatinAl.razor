@@ -1,0 +1,23 @@
+﻿@page "/satinal"
+@using static EYS.WebApp.Components.Controls.Common.OtomatikTamamlaComponent
+
+@rendermode InteractiveServer
+
+@inject IIsmeGoreEnvanterleriGoruntuleUseCase IsmeGoreEnvanterleriGoruntuleUseCase
+
+<h3>Envanter Satın Al</h3>
+<br />
+
+<OtomatikTamamlaComponent Label="Envanter"
+    AramaFonksiyon="EnvanterArama"></OtomatikTamamlaComponent>
+
+@code {
+
+    private List <ItemViewModel>? EnvanterArama(string name)
+    {
+        var liste = IsmeGoreEnvanterleriGoruntuleUseCase.ExecuteAsync(name).GetAwaiter().GetResult();
+        if (liste is null) return null;
+
+        return liste.Select(x => new ItemViewModel { Id = x.EnvanterId, Name = x.EnvanterIsim})?.ToList();
+    }
+}
