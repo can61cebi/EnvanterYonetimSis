@@ -4,14 +4,51 @@
 @rendermode InteractiveServer
 
 @inject IIsmeGoreEnvanterleriGoruntuleUseCase IsmeGoreEnvanterleriGoruntuleUseCase
+@inject IIDyeGoreEnvanterGoruntuleUseCase IDyeGoreEnvanterGoruntuleUseCase
+@inject IEnvanterSatinAlUseCase EnvanterSatinAlUseCase
 
 <h3>Envanter Satın Al</h3>
 <br />
 
-<OtomatikTamamlaComponent Label="Envanter"
-    AramaFonksiyon="EnvanterArama"></OtomatikTamamlaComponent>
+<EditForm Model="satinAlmaViewModel" OnValidSubmit="Satinal">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+
+    <div class="form-group">
+        <label for="sa">Satın Alma #</label>
+        <InputText id="sa" class="form-control" @bind-Value="satinAlmaViewModel.almaSayisi"></InputText>
+    </div>
+    <br />
+    <div class="card">
+        <div class="card-body">
+            <div class="form-group">
+                <OtomatikTamamlaComponent Label="Envanter"
+                                          AramaFonksiyon="EnvanterArama"
+                                          ItemSecildiginde="ItemSecmeYap">
+                </OtomatikTamamlaComponent>
+
+                @if (satinAlmaViewModel.EnvaterFiyati > 0)
+                {
+                    <text>Fiyat:</text>
+                    @satinAlmaViewModel.EnvaterFiyati.ToString("c")
+                }
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="adt">Adet</label>
+        <InputNumber id="adt" class="form-control" @bind-Value="satinAlmaViewModel.SatinAlmaAdeti"></InputNumber>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Satın Al</button>
+</EditForm>
 
 @code {
+    private SatinAlmaViewModel satinAlmaViewModel = new SatinAlmaViewModel();
+
+    private Envanter? seciliEnvanter = null;
 
     private List <ItemViewModel>? EnvanterArama(string name)
     {
@@ -19,5 +56,26 @@
         if (liste is null) return null;
 
         return liste.Select(x => new ItemViewModel { Id = x.EnvanterId, Name = x.EnvanterIsim})?.ToList();
+    }
+
+    private async Task ItemSecmeYap(ItemViewModel urn)
+    {
+        seciliEnvanter = await IDyeGoreEnvanterGoruntuleUseCase.ExecuteAsync(urn.Id);
+
+        this.satinAlmaViewModel.EnvanterId = urn.Id;
+        this.satinAlmaViewModel.EnvaterFiyati = seciliEnvanter.Fiyat;
+    }
+
+    private async Task Satinal()
+    {
+            await EnvanterSatinAlUseCase.ExecuteAsync(
+            this.satinAlmaViewModel.almaSayisi,
+            seciliEnvanter,
+            this.satinAlmaViewModel.SatinAlmaAdeti,
+            "Can"
+            );
+     
+            this.satinAlmaViewModel = new SatinAlmaViewModel();
+            this.seciliEnvanter = null;
     }
 }
