@@ -26,5 +26,21 @@ namespace EYS.Plugins.InMemory
                 AdetFiyati = fiyat
             });
         }
+
+        public void UretAsync(string uretimNumarasi, Envanter envanter, int tuketim, string alanKisi, double fiyat)
+        {
+            this._envanterIslemler.Add(new EnvanterIslem
+            {
+                UretimNumarasi = uretimNumarasi,
+                EnvanterId = envanter.EnvanterId,
+                OncekiAdet = envanter.Adet,
+                AksiyonTipi = EnvanterIslemTipi.UrunUret,
+                SonrakiAdet = envanter.Adet - tuketim,
+                IslemZamani = DateTime.Now,
+                AlanKisi = alanKisi,
+                AdetFiyati = fiyat
+            });
+
+        }
     }
 }
