@@ -13,7 +13,7 @@ namespace EYS.UseCases.Aksiyonlar
         private readonly IProductTransactionRepository productTransactionRepository;
         private readonly IProductRepository productRepository;
         public UrunUretUseCase(
-            IProductTransactionRepository productTransactionRepository
+            IProductTransactionRepository productTransactionRepository,
             IProductRepository productRepository)
         {
             this.productTransactionRepository = productTransactionRepository;

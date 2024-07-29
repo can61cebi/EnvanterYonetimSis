@@ -18,7 +18,7 @@ namespace EYS.Plugins.InMemory
 
         public ProductTransactionRepository(
             IProductRepository productRepository,
-            IInventoryTransactionRepository inventoryTransactionRepository
+            IInventoryTransactionRepository inventoryTransactionRepository,
             IInventoryRepository inventoryRepository)
             {
             this.productRepository = productRepository;

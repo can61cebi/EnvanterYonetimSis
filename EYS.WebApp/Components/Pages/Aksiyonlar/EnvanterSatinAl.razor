@@ -3,6 +3,8 @@
 
 @rendermode InteractiveServer
 
+@inject IJSRuntime JSRuntime
+
 @inject IIsmeGoreEnvanterleriGoruntuleUseCase IsmeGoreEnvanterleriGoruntuleUseCase
 @inject IIDyeGoreEnvanterGoruntuleUseCase IDyeGoreEnvanterGoruntuleUseCase
 @inject IEnvanterSatinAlUseCase EnvanterSatinAlUseCase
@@ -10,13 +12,13 @@
 <h3>Envanter Satın Al</h3>
 <br />
 
-<EditForm Model="satinAlmaViewModel" OnValidSubmit="Satinal">
+<EditForm id="satinalma-formu" Model="SatinAlmaViewModel" OnValidSubmit="Satinal">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
 
     <div class="form-group">
-        <label for="sa">Satın Alma #</label>
-        <InputText id="sa" class="form-control" @bind-Value="satinAlmaViewModel.almaSayisi"></InputText>
+        <label for="sa">Satın Alım #</label>
+        <InputText id="sa" class="form-control" @bind-Value="SatinAlmaViewModel.almaSayisi"></InputText>
     </div>
     <br />
     <div class="card">
@@ -27,10 +29,10 @@
                                           ItemSecildiginde="ItemSecmeYap">
                 </OtomatikTamamlaComponent>
 
-                @if (satinAlmaViewModel.EnvaterFiyati > 0)
+                @if (SatinAlmaViewModel.EnvaterFiyati > 0)
                 {
                     <text>Fiyat:</text>
-                    @satinAlmaViewModel.EnvaterFiyati.ToString("c")
+                    @SatinAlmaViewModel.EnvaterFiyati.ToString("c")
                 }
 
             </div>
@@ -39,16 +41,26 @@
     <br />
     <div class="form-group">
         <label for="adt">Adet</label>
-        <InputNumber id="adt" class="form-control" @bind-Value="satinAlmaViewModel.SatinAlmaAdeti"></InputNumber>
+        <InputNumber id="adt" class="form-control" @bind-Value="SatinAlmaViewModel.SatinAlmaAdeti"></InputNumber>
     </div>
     <br />
     <button type="submit" class="btn btn-primary">Satın Al</button>
 </EditForm>
 
 @code {
-    private SatinAlmaViewModel satinAlmaViewModel = new SatinAlmaViewModel();
+    private SatinAlmaViewModel SatinAlmaViewModel = new SatinAlmaViewModel();
 
     private Envanter? seciliEnvanter = null;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            JSRuntime.InvokeVoidAsync("formGondermeyiOnle", "satinalma-formu");
+        }
+    }
 
     private List <ItemViewModel>? EnvanterArama(string name)
     {
@@ -62,20 +74,20 @@
     {
         seciliEnvanter = await IDyeGoreEnvanterGoruntuleUseCase.ExecuteAsync(urn.Id);
 
-        this.satinAlmaViewModel.EnvanterId = urn.Id;
-        this.satinAlmaViewModel.EnvaterFiyati = seciliEnvanter.Fiyat;
+        this.SatinAlmaViewModel.EnvanterId = urn.Id;
+        this.SatinAlmaViewModel.EnvaterFiyati = seciliEnvanter.Fiyat;
     }
 
     private async Task Satinal()
     {
             await EnvanterSatinAlUseCase.ExecuteAsync(
-            this.satinAlmaViewModel.almaSayisi,
+            this.SatinAlmaViewModel.almaSayisi,
             seciliEnvanter,
-            this.satinAlmaViewModel.SatinAlmaAdeti,
+            this.SatinAlmaViewModel.SatinAlmaAdeti,
             "Can"
             );
      
-            this.satinAlmaViewModel = new SatinAlmaViewModel();
+            this.SatinAlmaViewModel = new SatinAlmaViewModel();
             this.seciliEnvanter = null;
     }
 }
