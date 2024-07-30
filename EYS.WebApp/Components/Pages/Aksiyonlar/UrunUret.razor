@@ -4,6 +4,8 @@
 
 @using static EYS.WebApp.Components.Controls.Common.OtomatikTamamlaComponent
 
+@inject IJSRuntime JSRuntime
+
 @inject IIDyeGoreUrunGoruntuleUseCase IDyeGoreUrunGoruntuleUseCase
 @inject IIsmeGoreUrunleriGoruntuleUseCase IsmeGoreUrunleriGoruntuleUseCase
 @inject IUrunUretUseCase UrunUretUseCase
@@ -11,19 +13,19 @@
 <h3>Ürün Üret</h3>
 <br />
 
-<EditForm Model="UretmeViewModel" OnValidSubmit="Uret">
+<EditForm id="uretme-formu" Model="UretmeViewModel" OnValidSubmit="Uret">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
 
     <div class="form-group">
-        <label for="sa">Üretim #</label>
+        <label for="sa">Üretim Numarası #</label>
         <InputText id="sa" class="form-control" @bind-Value="UretmeViewModel.uretmeSayisi"></InputText>
     </div>
     <br />
     <div class="card">
         <div class="card-body">
             <div class="form-group">
-                <OtomatikTamamlaComponent   Label="Üretim"
+                <OtomatikTamamlaComponent   Label="Üretilecek Ürün"
                                             AramaFonksiyon="UrunArama"
                                             ItemSecildiginde="ItemSecmeYap">
                 </OtomatikTamamlaComponent>
@@ -45,9 +47,19 @@
     private UretmeViewModel UretmeViewModel = new UretmeViewModel();
     private Urun? seciliUrun;
 
-    private List <ItemViewModel>? UrunArama(string name)
+    protected override void OnAfterRender(bool firstRender)
     {
-        var liste = IsmeGoreUrunleriGoruntuleUseCase.ExecuteAsync(name).GetAwaiter().GetResult();
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            JSRuntime.InvokeVoidAsync("formGondermeyiOnle", "uretme-formu");
+        }
+    }
+
+    private async Task<List<ItemViewModel>?> UrunArama(string name)
+    {
+        var liste = await IsmeGoreUrunleriGoruntuleUseCase.ExecuteAsync(name);
         if (liste is null) return null;
 
         return liste.Select(x => new ItemViewModel { Id = x.UrunId, Name = x.UrunIsim})?.ToList();

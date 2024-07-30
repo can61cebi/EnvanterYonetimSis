@@ -31,6 +31,9 @@ builder.Services.AddTransient<IIDyeGoreUrunGoruntuleUseCase, IDyeGoreUrunGoruntu
 
 builder.Services.AddTransient<IEnvanterSatinAlUseCase, EnvanterSatinAlUseCase>();
 builder.Services.AddTransient<IUrunUretUseCase, UrunUretUseCase>();
+builder.Services.AddTransient<IUrunSatUseCase, UrunSatUseCase>();
+
+builder.Services.AddTransient<IInventoryTransactionRepository, InventoryTransactionRepository>();
 
 var app = builder.Build();
 

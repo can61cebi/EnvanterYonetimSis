@@ -68,5 +68,22 @@ namespace EYS.Plugins.InMemory
 
             // Ürün işlemi ekle
         }
+
+        public Task UrunSatAsync(string satisNumarasi, Urun urun, int adet, double AdetFiyati, string yapanKisi)
+        {
+            this._urunIslemleri.Add(new UrunIslem
+            {
+                AksiyonTipi = UrunIslemTipi.UrunSat,
+                satmaSayisi = satisNumarasi,
+                UrunId = urun.UrunId,
+                OncekiAdet = urun.Adet,
+                SonrakiAdet = urun.Adet - adet,
+                IslemZamani = DateTime.Now,
+                AlanKisi = yapanKisi,
+                AdetFiyati = AdetFiyati
+            });
+
+            return Task.CompletedTask;
+        }
     }
 }

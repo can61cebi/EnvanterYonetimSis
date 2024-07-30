@@ -37,7 +37,7 @@
     private List<ItemViewModel>? aramaSonuclari = null;
 
     [Parameter]
-    public Func<string, List<ItemViewModel>>? AramaFonksiyon { get; set; }
+    public Func<string, Task<List<ItemViewModel>>>? AramaFonksiyon { get; set; }
 
     [Parameter]
     public EventCallback<ItemViewModel> ItemSecildiginde { get; set; }
@@ -54,13 +54,23 @@
 
             if (!string.IsNullOrWhiteSpace(_userInput) && AramaFonksiyon != null)
             {
-                aramaSonuclari = AramaFonksiyon(_userInput);
+                NesneleriGosterAsync();
             }
         }
     }
 
     private ItemViewModel? suankiItem = null;
     private int suankiItemIndex = -1;
+
+    private async Task NesneleriGosterAsync()
+    {
+        if(AramaFonksiyon != null)
+        {
+            aramaSonuclari = await AramaFonksiyon(_userInput);
+        }
+
+        StateHasChanged();
+    }
 
     private void ItemSecmeYap(ItemViewModel urn)
     {
