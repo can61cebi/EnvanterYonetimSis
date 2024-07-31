@@ -1,19 +1,19 @@
-﻿@page "/envanterraporlari"
+﻿@page "/urunraporlari"
 @using EYS.UseCases.Raporlar
 
 @rendermode InteractiveServer
 
-@inject IEnvanterAramaIslemleriUseCase EnvanterAramaIslemleriUseCase
+@inject IUrunAramaIslemleriUseCase UrunAramaIslemleriUseCase
 @inject IJSRuntime JSRuntime
 
-<h3>Envanter İşlemleri</h3>
+<h3>Ürün İşlemleri</h3>
 <br />
 
 <div id="yazdirma">
     <div class="row">
         <div class="col">
-            <label for="env">Envanter Adı</label>
-            <input type="text" id="env" class="form-control" @bind-value="envAdi" />
+            <label for="urn">Ürün Adı</label>
+            <input type="text" id="urn" class="form-control" @bind-value="urnAdi" />
         </div>
         <div class="col">
             <label for="ti">Tarihten İtibaren</label>
@@ -27,13 +27,13 @@
             <label for="at">Aksiyon Tipi</label>
             <select id="at" class="form-control" @bind="AksiyonTipiId">
                 <option value="0"></option>
-                <option value="1">Envanter Satın Al</option>
-                <option value="2">Ürün üret</option>
+                <option value="1">Ürün Üretim</option>
+                <option value="2">Ürün Satış</option>
                 </select>
         </div>
         <div class="col">
             <label>&nbsp;</label>
-            <button type="button" class="btn btn-primary form-control" @onclick="EnvanterArama">Ara</button>
+            <button type="button" class="btn btn-primary form-control" @onclick="UrunArama">Ara</button>
         </div>
         <div class="col">
             <label>&nbsp;</label>
@@ -41,39 +41,40 @@
         </div>
     </div>
 
-    @if (envanterIslemleri != null && envanterIslemleri.Count() > 0)
+    @if (urunIslemleri != null && urunIslemleri.Count() > 0)
     {
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>İşlem Tarihi</th>
-                    <th>Envanter</th>
+                    <th>Urun</th>
                     <th>Aksiyon</th>
                     <th>Önceki Adet</th>
                     <th>Sonraki Adet</th>
                     <th>Birim Fiyatı</th>
                     <th>Satış Numarası</th>
+                    <th>Üretim Numarası</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var ei in envanterIslemleri) {
+                @foreach (var ei in urunIslemleri) {
                     <tr>
                         <td>@ei.IslemZamani.ToString("dd/MM/yyyy")</td>
-                        <td>@ei.Envanter.EnvanterIsim</td>
+                        <td>@ei.urun.UrunIsim</td>
                         <td>
-                            @if (ei.AksiyonTipi == EnvanterIslemTipi.EnvanterSatinAl)
-                            {
-                                <text>Satın Alım</text>
-                            }
-                            else if (ei.AksiyonTipi == EnvanterIslemTipi.UrunUret)
+                            @if (ei.AksiyonTipi == UrunIslemTipi.UrunUret)
                             {
                                 <text>Üretim</text>
+                            }
+                            else if (ei.AksiyonTipi == UrunIslemTipi.UrunSat)
+                            {
+                                <text>Satış</text>
                             }
                         </td>
                         <td>@ei.OncekiAdet</td>
                         <td>@ei.SonrakiAdet</td>
-                        <td>@ei.AdetFiyati.ToString("c")</td>
-                        <td>@ei.almaSayisi</td>
+                        <td>@ei.AdetFiyati?.ToString("c")</td>
+                        <td>@ei.SNumarasi</td>
                         <td>@ei.UretimNumarasi</td>
                     </tr>
                 }
@@ -82,29 +83,28 @@
 
     }
 </div>
-
 @code {
 
-    private string envAdi;
+    private string urnAdi;
     private DateTime? tarihtenItibaren;
     private DateTime? tariheKadar;
     private int AksiyonTipiId;
-    private IEnumerable<EnvanterIslem>? envanterIslemleri;
+    private IEnumerable<UrunIslem>? urunIslemleri;
 
-    private async Task EnvanterArama()
+    private async Task UrunArama()
     {
-        EnvanterIslemTipi? envTipi = null;
+        UrunIslemTipi? urnTipi = null;
 
         if(AksiyonTipiId != 0)
         {
-            envTipi = (EnvanterIslemTipi)AksiyonTipiId;
+            urnTipi = (UrunIslemTipi)AksiyonTipiId;
         }
 
-        envanterIslemleri = await EnvanterAramaIslemleriUseCase.ExecuteAsync(
-            envAdi,
+        urunIslemleri = await UrunAramaIslemleriUseCase.ExecuteAsync(
+            urnAdi,
             tarihtenItibaren,
             tariheKadar,
-            envTipi
+            urnTipi
         );
     }
 

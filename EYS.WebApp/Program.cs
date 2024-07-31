@@ -35,6 +35,7 @@ builder.Services.AddTransient<IUrunUretUseCase, UrunUretUseCase>();
 builder.Services.AddTransient<IUrunSatUseCase, UrunSatUseCase>();
 
 builder.Services.AddTransient<IEnvanterAramaIslemleriUseCase, EnvanterAramaIslemleriUseCase>();
+builder.Services.AddTransient<IUrunAramaIslemleriUseCase, UrunAramaIslemleriUseCase>();
 
 var app = builder.Build();
 

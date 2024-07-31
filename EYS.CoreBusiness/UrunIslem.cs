@@ -11,7 +11,7 @@ namespace EYS.CoreBusiness
     {
         public int UrunIslemId { get; set; }
 
-        public string satmaSayisi { get; set; } = string.Empty;
+        public string SNumarasi { get; set; } = string.Empty;
 
         public string UretimNumarasi { get; set; } = string.Empty;
 

@@ -74,7 +74,7 @@ namespace EYS.Plugins.InMemory
             this._urunIslemleri.Add(new UrunIslem
             {
                 AksiyonTipi = UrunIslemTipi.UrunSat,
-                satmaSayisi = satisNumarasi,
+                SNumarasi = satisNumarasi,
                 UrunId = urun.UrunId,
                 OncekiAdet = urun.Adet,
                 SonrakiAdet = urun.Adet - adet,
@@ -84,6 +84,41 @@ namespace EYS.Plugins.InMemory
             });
 
             return Task.CompletedTask;
+        }
+
+        public async Task<IEnumerable<UrunIslem>> UrunIslemleriniGetirAsync(string urunAdi, DateTime? tarihtenItibaren, DateTime? tariheKadar, UrunIslemTipi? islemTipi)
+        {
+            var urunler = (await productRepository.IsmeGoreUrunleriGoruntuleAsync(string.Empty)).ToList();
+
+            /* Database kullanıldığı takdirde bu sorgu çalıştırılacak
+             * select *
+             * from urunislemleri ui
+             * join urunler urn on ui.urunid = urn.urunid
+             */
+
+            var sorgu = from ui in this._urunIslemleri
+                        join urn in urunler on ui.UrunId equals urn.UrunId
+                        where
+                        (string.IsNullOrWhiteSpace(urunAdi) || urn.UrunIsim.ToLower().IndexOf(urunAdi.ToLower()) >= 0) &&
+                        (!tarihtenItibaren.HasValue || ui.IslemZamani >= tarihtenItibaren.Value) &&
+                        (!tariheKadar.HasValue || ui.IslemZamani <= tariheKadar.Value) &&
+                        (!islemTipi.HasValue || ui.AksiyonTipi == islemTipi.Value)
+                        select new UrunIslem
+                        {
+                            urun = urn,
+                            UrunIslemId = ui.UrunIslemId,
+                            SNumarasi = ui.SNumarasi,
+                            UretimNumarasi = ui.UretimNumarasi,
+                            UrunId = ui.UrunId,
+                            OncekiAdet = ui.OncekiAdet,
+                            AksiyonTipi = ui.AksiyonTipi,
+                            SonrakiAdet = ui.SonrakiAdet,
+                            IslemZamani = ui.IslemZamani,
+                            AlanKisi = ui.AlanKisi,
+                            AdetFiyati = ui.AdetFiyati,
+                        };
+
+            return sorgu;
         }
     }
 }

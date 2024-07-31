@@ -20,9 +20,9 @@ namespace EYS.UseCases.Aksiyonlar
             this.productTransactionRepository = productTransactionRepository;
             this.productRepository = productRepository;
         }
-        public async Task ExecuteAsync(string SatisNumarasi, Urun urun, int adet, double AdetFiyati, string yapanKisi)
+        public async Task ExecuteAsync(string satisNumarasi, Urun urun, int adet, double AdetFiyati, string yapanKisi)
         {
-            await this.productTransactionRepository.UrunSatAsync(SatisNumarasi, urun, adet, AdetFiyati, yapanKisi);
+            await this.productTransactionRepository.UrunSatAsync(satisNumarasi, urun, adet, AdetFiyati, yapanKisi);
 
             urun.Adet -= adet;
             await this.productRepository.UrunGuncelleAsync(urun);
