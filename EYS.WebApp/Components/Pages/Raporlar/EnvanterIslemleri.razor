@@ -1,0 +1,102 @@
+﻿@page "/envanterraporlari"
+@using EYS.UseCases.Raporlar
+
+@rendermode InteractiveServer
+
+@inject IEnvanterAramaIslemleriUseCase EnvanterAramaIslemleriUseCase
+
+<h3>Envanter İşlemleri</h3>
+<br />
+
+<div class="row">
+    <div class="col">
+        <label for="env">Envanter Adı</label>
+        <input type="text" id="env" class="form-control" @bind-value="envAdi" />
+    </div>
+    <div class="col">
+        <label for="ti">Tarihten İtibaren</label>
+        <input type="date" id="ti" class="form-control" @bind-value="tarihtenItibaren" />
+    </div>
+    <div class="col">
+        <label for="tk">Tarihe Kadar</label>
+        <input type="date" id="tk" class="form-control" @bind-value="tariheKadar" />
+    </div>
+    <div class="col">
+        <label for="at">Aksiyon Tipi</label>
+        <select id="at" class="form-control" @bind="AksiyonTipiId">
+            <option value="0"></option>
+            <option value="1">Envanter Satın Al</option>
+            <option value="2">Ürün üret</option>
+            </select>
+    </div>
+    <div class="col">
+        <label>&nbsp;</label>
+        <button type="button" class="btn btn-primary form-control" @onclick="EnvanterArama">Ara</button>
+    </div>
+</div>
+
+@if (envanterIslemleri != null && envanterIslemleri.Count() > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>İşlem Tarihi</th>
+                <th>Envanter</th>
+                <th>Aksiyon</th>
+                <th>Önceki Adet</th>
+                <th>Sonraki Adet</th>
+                <th>Satın Alım Numarası</th>
+                <th>Üretim Numarası</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ei in envanterIslemleri) {
+                <tr>
+                    <td>@ei.IslemZamani.ToString("dd/MM/yyyy")</td>
+                    <td>@ei.Envanter.EnvanterIsim</td>
+                    <td>
+                        @if (ei.AksiyonTipi == EnvanterIslemTipi.EnvanterSatinAl)
+                        {
+                            <text>Satın Al</text>
+                        }
+                        else if (ei.AksiyonTipi == EnvanterIslemTipi.UrunUret)
+                        {
+                            <text>Ürün Üret</text>
+                        }
+                    </td>
+                    <td>@ei.OncekiAdet</td>
+                    <td>@ei.SonrakiAdet</td>
+                    <td>@ei.almaSayisi</td>
+                    <td>@ei.UretimNumarasi</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+@code {
+
+    private string envAdi;
+    private DateTime? tarihtenItibaren;
+    private DateTime? tariheKadar;
+    private int AksiyonTipiId;
+    private IEnumerable<EnvanterIslem>? envanterIslemleri;
+
+    private async Task EnvanterArama()
+    {
+        EnvanterIslemTipi? envTipi = null;
+
+        if(AksiyonTipiId != 0)
+        {
+            envTipi = (EnvanterIslemTipi)AksiyonTipiId;
+        }
+
+        envanterIslemleri = await EnvanterAramaIslemleriUseCase.ExecuteAsync(
+            envAdi,
+            tarihtenItibaren,
+            tariheKadar,
+            envTipi
+        );
+    }
+}

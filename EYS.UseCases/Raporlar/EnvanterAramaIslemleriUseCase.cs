@@ -12,8 +12,7 @@ namespace EYS.UseCases.Raporlar
     {
         private readonly IInventoryTransactionRepository inventoryTransactionRepository;
 
-        public EnvanterAramaIslemleriUseCase(
-            IInventoryTransactionRepository inventoryTransactionRepository)
+        public EnvanterAramaIslemleriUseCase(IInventoryTransactionRepository inventoryTransactionRepository)
         {
             this.inventoryTransactionRepository = inventoryTransactionRepository;
         }

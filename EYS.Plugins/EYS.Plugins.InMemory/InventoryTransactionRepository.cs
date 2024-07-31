@@ -22,7 +22,8 @@ namespace EYS.Plugins.InMemory
         {
             var envanterler = (await inventoryRepository.IsmeGoreEnvanterleriGoruntuleAsync(string.Empty)).ToList();
 
-            /* select *
+            /* Database kullanıldığı takdirde bu sorgu çalıştırılacak
+             * select *
              * from envanterislemleri ei
              * join envanterler env on ei.envanterid = env.envanterid
              */

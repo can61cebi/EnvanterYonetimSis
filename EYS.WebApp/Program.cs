@@ -3,6 +3,7 @@ using EYS.UseCases.Aksiyonlar;
 using EYS.UseCases.Envanterler;
 using EYS.UseCases.Envanterler.Interfaces;
 using EYS.UseCases.PluginInterfaces;
+using EYS.UseCases.Raporlar;
 using EYS.UseCases.Urunler;
 using EYS.WebApp.Components;
 
@@ -33,7 +34,7 @@ builder.Services.AddTransient<IEnvanterSatinAlUseCase, EnvanterSatinAlUseCase>()
 builder.Services.AddTransient<IUrunUretUseCase, UrunUretUseCase>();
 builder.Services.AddTransient<IUrunSatUseCase, UrunSatUseCase>();
 
-builder.Services.AddTransient<IInventoryTransactionRepository, InventoryTransactionRepository>();
+builder.Services.AddTransient<IEnvanterAramaIslemleriUseCase, EnvanterAramaIslemleriUseCase>();
 
 var app = builder.Build();
 
