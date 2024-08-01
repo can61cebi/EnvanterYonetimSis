@@ -10,9 +10,7 @@ namespace EYS.UseCases.PluginInterfaces
 {
     public interface IInventoryRepository
     {
-        Task EnvanterEkleAsync(EnvanterEkleUseCase envanter);
         Task EnvanterEkleAsync(Envanter envanter);
-        Task EnvanterGuncelleAsync(EnvanterDuzenleUseCase envanter);
         Task EnvanterGuncelleAsync(Envanter envanter);
         Task<Envanter> IDdenEnvanterBulAsync(int envanterID);
         Task IDyeGoreEnvanterSilAsync(int envanterID);

@@ -12,10 +12,22 @@ namespace EYS.Plugins.InMemory
         {
             _envanterler = new List<Envanter>()
             {
-                new Envanter { EnvanterId = 1, EnvanterIsim = "MSI Laptop", Adet = 1, Fiyat = 10000},
-                new Envanter { EnvanterId = 2, EnvanterIsim = "HyperX Mouse", Adet = 2, Fiyat = 550},
-                new Envanter { EnvanterId = 3, EnvanterIsim = "LG Monitor", Adet = 1, Fiyat = 7000},
-                new Envanter { EnvanterId = 4, EnvanterIsim = "Corsair Kulaklik", Adet = 1, Fiyat = 300},
+                new Envanter { EnvanterId = 1, EnvanterIsim = "Ekran Kartı", Adet = 17, Fiyat = 12000},
+                new Envanter { EnvanterId = 2, EnvanterIsim = "İşlemci", Adet = 16, Fiyat = 6000},
+                new Envanter { EnvanterId = 3, EnvanterIsim = "Anakart", Adet = 16, Fiyat = 4000},
+                new Envanter { EnvanterId = 4, EnvanterIsim = "Rastgele Erişim Bellek", Adet = 22, Fiyat = 600},
+                new Envanter { EnvanterId = 5, EnvanterIsim = "Güç Kaynağı", Adet = 16, Fiyat = 2000},
+                new Envanter { EnvanterId = 6, EnvanterIsim = "Katı Hal Sürücüsü", Adet = 20, Fiyat = 2000},
+                new Envanter { EnvanterId = 7, EnvanterIsim = "Monitör", Adet = 28, Fiyat = 13000},
+                new Envanter { EnvanterId = 8, EnvanterIsim = "Klavye", Adet = 30, Fiyat = 1100},
+                new Envanter { EnvanterId = 9, EnvanterIsim = "Fare", Adet = 28, Fiyat = 750},
+                new Envanter { EnvanterId = 10, EnvanterIsim = "Kulaklık", Adet = 17, Fiyat = 1600},
+                new Envanter { EnvanterId = 11, EnvanterIsim = "Masa", Adet = 20, Fiyat = 11000},
+                new Envanter { EnvanterId = 12, EnvanterIsim = "Koltuk", Adet = 20, Fiyat = 6800},
+                new Envanter { EnvanterId = 13, EnvanterIsim = "Raf", Adet = 20, Fiyat = 780},
+                new Envanter { EnvanterId = 14, EnvanterIsim = "Priz", Adet = 50, Fiyat = 200},
+                new Envanter { EnvanterId = 15, EnvanterIsim = "Kalem", Adet = 60, Fiyat = 50},
+                new Envanter { EnvanterId = 16, EnvanterIsim = "Kağıt", Adet = 2000, Fiyat = 10},
             };
         }
 
@@ -31,11 +43,6 @@ namespace EYS.Plugins.InMemory
             _envanterler.Add(envanter);
 
             return Task.CompletedTask;
-        }
-
-        public Task EnvanterEkleAsync(EnvanterEkleUseCase envanter)
-        {
-            throw new NotImplementedException();
         }
 
         public Task EnvanterGuncelleAsync(Envanter envanter)
@@ -54,11 +61,6 @@ namespace EYS.Plugins.InMemory
             }
 
             return Task.CompletedTask;
-        }
-
-        public Task EnvanterGuncelleAsync(EnvanterDuzenleUseCase envanter)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<Envanter> IDdenEnvanterBulAsync(int envanterID)

@@ -12,8 +12,9 @@ namespace EYS.Plugins.InMemory
         {
             _urunler = new List<Urun>()
             {
-                new Urun { UrunId = 1, UrunIsim = "Laptop", Adet = 10, Fiyat = 40000},
-                new Urun { UrunId = 2, UrunIsim = "Mouse", Adet = 20, Fiyat = 800},
+                new Urun { UrunId = 1, UrunIsim = "Masaüstü Bilgisayar", Adet = 16, Fiyat = 26600},
+                new Urun { UrunId = 2, UrunIsim = "Çevre Bileşenleri", Adet = 17, Fiyat = 14850},
+                new Urun { UrunId = 3, UrunIsim = "Ofis Mobilyaları", Adet = 20, Fiyat = 18840},
             };
         }
 

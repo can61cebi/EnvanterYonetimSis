@@ -1,4 +1,5 @@
-﻿using EYS.Plugins.InMemory;
+﻿using EYS.Plugins.EFCoreSqlServer;
+using EYS.Plugins.InMemory;
 using EYS.UseCases.Aksiyonlar;
 using EYS.UseCases.Envanterler;
 using EYS.UseCases.Envanterler.Interfaces;
@@ -6,10 +7,16 @@ using EYS.UseCases.PluginInterfaces;
 using EYS.UseCases.Raporlar;
 using EYS.UseCases.Urunler;
 using EYS.WebApp.Components;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContextFactory<EYSIcerik>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("EnvanterYonetim"));
+});
+
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>(); // bir kere oluşturuluyor ve lazım olduğu zaman kullanılıyor.

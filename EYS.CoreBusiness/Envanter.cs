@@ -15,5 +15,8 @@ namespace EYS.CoreBusiness
 
         [Range(0, int.MaxValue, ErrorMessage = "Fiyat 0 ya da daha büyük olmalıdır.")]
         public double Fiyat { get; set; }
+
+        public List<UrunEnvanter> UrunEnvanterleri { get; set; } = new List<UrunEnvanter>();
+
     }
 }

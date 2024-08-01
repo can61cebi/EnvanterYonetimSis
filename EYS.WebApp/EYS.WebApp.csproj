@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EYS.CoreBusiness\EYS.CoreBusiness.csproj" />
+    <ProjectReference Include="..\EYS.Plugins\EYS.Plugins.EFCoreSqlServer\EYS.Plugins.EFCoreSqlServer.csproj" />
     <ProjectReference Include="..\EYS.Plugins\EYS.Plugins.InMemory\EYS.Plugins.InMemory.csproj" />
     <ProjectReference Include="..\EYS.UseCases\EYS.UseCases.csproj" />
   </ItemGroup>
@@ -30,6 +31,19 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Components\Pages\Envanterler\EnvanterDuzenle.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
