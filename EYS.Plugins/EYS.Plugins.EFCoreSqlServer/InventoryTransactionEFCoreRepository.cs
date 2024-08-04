@@ -38,18 +38,48 @@ namespace EYS.Plugins.EFCoreSqlServer
         {
             using var db = contextFactory.CreateDbContext();
 
-            db.EnvanterIslemleri?.Add(new EnvanterIslem
+            // Mevcut envanteri bul
+            var mevcutEnvanter = await db.Envanterler
+                .FirstOrDefaultAsync(e => e.EnvanterIsim == envanter.EnvanterIsim);
+
+            if (mevcutEnvanter != null)
             {
-                almaSayisi = almaSayisi,
-                EnvanterId = envanter.EnvanterId,
-                OncekiAdet = envanter.Adet,
-                AksiyonTipi = EnvanterIslemTipi.EnvanterSatinAl,
-                SonrakiAdet = envanter.Adet + adet,
-                IslemZamani = DateTime.Now,
-                AlanKisi = alanKisi,
-                Envanter = envanter,
-                AdetFiyati = fiyat
-            });
+                // Mevcut envanteri güncelle
+                mevcutEnvanter.Adet += adet;
+                db.Envanterler.Update(mevcutEnvanter);
+
+                // Envanter işlem kaydını ekle
+                db.EnvanterIslemleri?.Add(new EnvanterIslem
+                {
+                    almaSayisi = almaSayisi,
+                    OncekiAdet = mevcutEnvanter.Adet - adet,
+                    AksiyonTipi = EnvanterIslemTipi.EnvanterSatinAl,
+                    SonrakiAdet = mevcutEnvanter.Adet,
+                    IslemZamani = DateTime.Now,
+                    AlanKisi = alanKisi,
+                    EnvanterId = mevcutEnvanter.EnvanterId,
+                    AdetFiyati = fiyat
+                });
+            }
+            else
+            {
+                // Yeni envanteri ekle
+                db.Envanterler.Add(envanter);
+                await db.SaveChangesAsync();
+
+                // Envanter işlem kaydını ekle
+                db.EnvanterIslemleri?.Add(new EnvanterIslem
+                {
+                    almaSayisi = almaSayisi,
+                    OncekiAdet = 0,
+                    AksiyonTipi = EnvanterIslemTipi.EnvanterSatinAl,
+                    SonrakiAdet = envanter.Adet,
+                    IslemZamani = DateTime.Now,
+                    AlanKisi = alanKisi,
+                    EnvanterId = envanter.EnvanterId,
+                    AdetFiyati = fiyat
+                });
+            }
 
             await db.SaveChangesAsync();
         }
