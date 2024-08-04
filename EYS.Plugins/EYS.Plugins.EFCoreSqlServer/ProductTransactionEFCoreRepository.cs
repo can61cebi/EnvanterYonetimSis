@@ -1,5 +1,7 @@
 ﻿using EYS.CoreBusiness;
+using EYS.Plugins.EFCoreSqlServer;
 using EYS.UseCases.PluginInterfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +10,20 @@ using System.Threading.Tasks;
 
 namespace EYS.Plugins.InMemory
 {
-    public class ProductTransactionRepository : IProductTransactionRepository
+    public class ProductTransactionEFCoreRepository : IProductTransactionRepository
     {
-        private List<UrunIslem> _urunIslemleri = new List<UrunIslem>();
-
+        private readonly IDbContextFactory<EYSIcerik> contextFactory;
         private readonly IProductRepository productRepository;
         private readonly IInventoryTransactionRepository inventoryTransactionRepository;
         private readonly IInventoryRepository inventoryRepository;
 
-        public ProductTransactionRepository(
+        public ProductTransactionEFCoreRepository(
+            IDbContextFactory<EYSIcerik> contextFactory,
             IProductRepository productRepository,
             IInventoryTransactionRepository inventoryTransactionRepository,
             IInventoryRepository inventoryRepository)
             {
+            this.contextFactory = contextFactory;
             this.productRepository = productRepository;
             this.inventoryTransactionRepository = inventoryTransactionRepository;
             this.inventoryRepository = inventoryRepository;
@@ -28,7 +31,10 @@ namespace EYS.Plugins.InMemory
 
         public async Task UretAsync(string uretimNumarasi, Urun urun, int adet, string alanKisi)
         {
+            using var db = contextFactory.CreateDbContext();
+
             // Envanter adetine ekle
+
             var urn = await this.productRepository.IDdenUrunBulAsync(urun.UrunId);
             if (urn != null)
             {
@@ -53,7 +59,7 @@ namespace EYS.Plugins.InMemory
             }
 
             // Ürün işlemi ekle
-            this._urunIslemleri.Add(new UrunIslem
+            db.UrunIslemleri?.Add(new UrunIslem
             {
                 UretimNumarasi = uretimNumarasi,
                 UrunId = urun.UrunId,
@@ -64,14 +70,18 @@ namespace EYS.Plugins.InMemory
                 AlanKisi = alanKisi,
             });
 
+            await db.SaveChangesAsync();
+
             // Envanter işlemi ekle
 
             // Ürün işlemi ekle
         }
 
-        public Task UrunSatAsync(string satisNumarasi, Urun urun, int adet, double AdetFiyati, string yapanKisi)
+        public async Task UrunSatAsync(string satisNumarasi, Urun urun, int adet, double AdetFiyati, string yapanKisi)
         {
-            this._urunIslemleri.Add(new UrunIslem
+            using var db = contextFactory.CreateDbContext();
+
+            db.UrunIslemleri?.Add(new UrunIslem
             {
                 AksiyonTipi = UrunIslemTipi.UrunSat,
                 SNumarasi = satisNumarasi,
@@ -83,12 +93,12 @@ namespace EYS.Plugins.InMemory
                 AdetFiyati = AdetFiyati
             });
 
-            return Task.CompletedTask;
+            await db.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<UrunIslem>> UrunIslemleriniGetirAsync(string urunAdi, DateTime? tarihtenItibaren, DateTime? tariheKadar, UrunIslemTipi? islemTipi)
         {
-            var urunler = (await productRepository.IsmeGoreUrunleriGoruntuleAsync(string.Empty)).ToList();
+            using var db = contextFactory.CreateDbContext();
 
             /* Database kullanıldığı takdirde bu sorgu çalıştırılacak
              * select *
@@ -96,29 +106,16 @@ namespace EYS.Plugins.InMemory
              * join urunler urn on ui.urunid = urn.urunid
              */
 
-            var sorgu = from ui in this._urunIslemleri
-                        join urn in urunler on ui.UrunId equals urn.UrunId
+            var sorgu = from ui in db.UrunIslemleri
+                        join urn in db.Urunler on ui.UrunId equals urn.UrunId
                         where
                         (string.IsNullOrWhiteSpace(urunAdi) || urn.UrunIsim.ToLower().IndexOf(urunAdi.ToLower()) >= 0) &&
                         (!tarihtenItibaren.HasValue || ui.IslemZamani >= tarihtenItibaren.Value) &&
                         (!tariheKadar.HasValue || ui.IslemZamani <= tariheKadar.Value) &&
                         (!islemTipi.HasValue || ui.AksiyonTipi == islemTipi.Value)
-                        select new UrunIslem
-                        {
-                            urun = urn,
-                            UrunIslemId = ui.UrunIslemId,
-                            SNumarasi = ui.SNumarasi,
-                            UretimNumarasi = ui.UretimNumarasi,
-                            UrunId = ui.UrunId,
-                            OncekiAdet = ui.OncekiAdet,
-                            AksiyonTipi = ui.AksiyonTipi,
-                            SonrakiAdet = ui.SonrakiAdet,
-                            IslemZamani = ui.IslemZamani,
-                            AlanKisi = ui.AlanKisi,
-                            AdetFiyati = ui.AdetFiyati,
-                        };
+                        select ui;
 
-            return sorgu;
+            return await sorgu.Include(x => x.urun).ToListAsync();
         }
     }
 }

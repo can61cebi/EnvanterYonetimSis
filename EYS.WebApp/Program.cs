@@ -7,6 +7,7 @@ using EYS.UseCases.PluginInterfaces;
 using EYS.UseCases.Raporlar;
 using EYS.UseCases.Urunler;
 using EYS.WebApp.Components;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,10 +20,23 @@ builder.Services.AddDbContextFactory<EYSIcerik>(options =>
 
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>(); // bir kere oluşturuluyor ve lazım olduğu zaman kullanılıyor.
-builder.Services.AddSingleton<IProductRepository, ProductRepository>();
-builder.Services.AddSingleton<IInventoryTransactionRepository, InventoryTransactionRepository>();
-builder.Services.AddSingleton<IProductTransactionRepository, ProductTransactionRepository>();
+if (builder.Environment.IsEnvironment("Testing"))
+{
+    //StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
+
+    builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>(); // bir kere oluşturuluyor ve lazım olduğu zaman kullanılıyor.
+    builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+    builder.Services.AddSingleton<IInventoryTransactionRepository, InventoryTransactionRepository>();
+    builder.Services.AddSingleton<IProductTransactionRepository, ProductTransactionRepository>();
+}
+else
+{
+    builder.Services.AddTransient<IInventoryRepository, EnvanterEFCoreRepository>(); // çağrıldığında oluşuyor kullanılıyor ve siliniyor.
+    builder.Services.AddTransient<IProductRepository, UrunEFCoreRepository>();
+    builder.Services.AddTransient<IInventoryTransactionRepository, InventoryTransactionEFCoreRepository>();
+    builder.Services.AddTransient<IProductTransactionRepository, ProductTransactionEFCoreRepository>();
+
+}
 
 builder.Services.AddTransient<IIsmeGoreEnvanterleriGoruntuleUseCase, IsmeGoreEnvanterleriGoruntuleUseCase>(); // çağrıldığında oluşuyor kullanılıyor ve siliniyor.
 builder.Services.AddTransient<IEnvanterEkleUseCase, EnvanterEkleUseCase>();

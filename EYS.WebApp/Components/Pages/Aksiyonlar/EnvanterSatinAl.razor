@@ -81,11 +81,11 @@
     private async Task Satinal()
     {
             await EnvanterSatinAlUseCase.ExecuteAsync(
-            this.SatinAlmaViewModel.almaSayisi,
-            seciliEnvanter,
-            this.SatinAlmaViewModel.SatinAlmaAdeti,
-            "Can"
-            );
+                this.SatinAlmaViewModel.almaSayisi,
+                seciliEnvanter,
+                this.SatinAlmaViewModel.SatinAlmaAdeti,
+                "Can"
+                );
      
             this.SatinAlmaViewModel = new SatinAlmaViewModel();
             this.seciliEnvanter = null;

@@ -48,11 +48,18 @@
 @code {
 
     [SupplyParameterFromForm]
-    private Envanter envanter { get; set; } = new Envanter();
+    private EnvanterViewModel envanter { get; set; } = new EnvanterViewModel();
 
     private async Task Kaydet()
     {
-        await EnvanterEkleUseCase.ExecuteAsync(envanter);
+        var env = new Envanter
+            {
+                EnvanterId = envanter.EnvanterId,
+                EnvanterIsim = envanter.EnvanterIsim,
+                Fiyat = envanter.Fiyat,
+                Adet = envanter.Adet
+            };
+        await EnvanterEkleUseCase.ExecuteAsync(env);
 
         NavigationManager.NavigateTo("/envanterler");
     }

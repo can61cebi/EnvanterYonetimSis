@@ -54,18 +54,35 @@
     public int EnvId { get; set; }
 
     [SupplyParameterFromForm]
-    private Envanter? envanter { get; set; }
+    private EnvanterViewModel? envanter { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        this.envanter ??= await IDyeGoreEnvanterGoruntuleUseCase.ExecuteAsync(this.EnvId);
+        if(this.envanter is null)
+        {
+            var env = await IDyeGoreEnvanterGoruntuleUseCase.ExecuteAsync(this.EnvId);
+            envanter = new EnvanterViewModel             {
+                EnvanterId = env.EnvanterId,
+                EnvanterIsim = env.EnvanterIsim,
+                Adet = env.Adet,
+                Fiyat = env.Fiyat
+            };
+        }
     }
 
     private async Task Guncelle()
     {
         if (envanter is not null)
         {
-            await EnvanterDuzenleUseCase.ExecuteAsync(envanter);
+            var env = new Envanter
+            {
+                EnvanterId = envanter.EnvanterId,
+                EnvanterIsim = envanter.EnvanterIsim,
+                Adet = envanter.Adet,
+                Fiyat = envanter.Fiyat
+            };
+
+            await EnvanterDuzenleUseCase.ExecuteAsync(env);
             NavigationManager.NavigateTo("/envanterler");
         }
     }

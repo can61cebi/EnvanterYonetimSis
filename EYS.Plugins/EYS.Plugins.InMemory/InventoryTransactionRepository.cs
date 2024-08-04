@@ -3,6 +3,7 @@ using EYS.UseCases.PluginInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,7 +53,7 @@ namespace EYS.Plugins.InMemory
             return sorgu;
         }
 
-        public void SatinAlAsync(string almaSayisi, Envanter envanter, int adet, string alanKisi, double fiyat)
+        public Task SatinAlAsync(string almaSayisi, Envanter envanter, int adet, string alanKisi, double fiyat)
         {
             this._envanterIslemler.Add(new EnvanterIslem
             {
@@ -66,9 +67,11 @@ namespace EYS.Plugins.InMemory
                 Envanter = envanter,
                 AdetFiyati = fiyat
             });
+
+            return Task.CompletedTask;
         }
 
-        public void UretAsync(string uretimNumarasi, Envanter envanter, int tuketim, string alanKisi, double fiyat)
+        public Task UretAsync(string uretimNumarasi, Envanter envanter, int tuketim, string alanKisi, double fiyat)
         {
             this._envanterIslemler.Add(new EnvanterIslem
             {
@@ -82,6 +85,7 @@ namespace EYS.Plugins.InMemory
                 AdetFiyati = fiyat
             });
 
+            return Task.CompletedTask;
         }
     }
 }

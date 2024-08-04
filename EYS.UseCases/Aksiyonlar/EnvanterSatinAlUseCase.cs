@@ -24,7 +24,7 @@ namespace EYS.UseCases.Aksiyonlar
         public async Task ExecuteAsync(string almaSayisi, Envanter envanter, int adet, string alanKisi)
         {
             // Satın alma tablosunu girin
-            inventoryTransactionRepository.SatinAlAsync(almaSayisi, envanter, adet, alanKisi, envanter.Fiyat);
+            await inventoryTransactionRepository.SatinAlAsync(almaSayisi, envanter, adet, alanKisi, envanter.Fiyat);
 
             // Adeti arttırın
             envanter.Adet += adet;
