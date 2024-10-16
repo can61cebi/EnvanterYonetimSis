@@ -1,7 +1,7 @@
-using Blazor.KimlikDogrulamaOrnek.Data;
+using EYS.WebApp.Data;
 using Microsoft.AspNetCore.Identity;
 
-namespace Blazor.KimlikDogrulamaOrnek.Components.Account
+namespace EYS.WebApp.Components.Account
 {
     internal sealed class IdentityUserAccessor(UserManager<ApplicationUser> userManager, IdentityRedirectManager redirectManager)
     {

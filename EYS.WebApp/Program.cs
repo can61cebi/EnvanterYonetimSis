@@ -1,5 +1,5 @@
-﻿using Blazor.KimlikDogrulamaOrnek.Components.Account;
-using Blazor.KimlikDogrulamaOrnek.Data;
+﻿using EYS.WebApp.Components.Account;
+using EYS.WebApp.Data;
 using EYS.Plugins.EFCoreSqlServer;
 using EYS.Plugins.InMemory;
 using EYS.UseCases.Aksiyonlar;

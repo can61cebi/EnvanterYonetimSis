@@ -1,4 +1,4 @@
-using Blazor.KimlikDogrulamaOrnek.Data;
+using EYS.WebApp.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

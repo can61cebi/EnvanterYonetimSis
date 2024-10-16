@@ -1,8 +1,8 @@
-using Blazor.KimlikDogrulamaOrnek.Data;
+using EYS.WebApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
-namespace Blazor.KimlikDogrulamaOrnek.Components.Account
+namespace EYS.WebApp.Components.Account
 {
     // Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.
     internal sealed class IdentityNoOpEmailSender : IEmailSender<ApplicationUser>

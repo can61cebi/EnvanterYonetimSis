@@ -1,4 +1,4 @@
-using Blazor.KimlikDogrulamaOrnek.Data;
+using EYS.WebApp.Data;
 using EYS.WebApp.Components.Account.Pages;
 using EYS.WebApp.Components.Account.Pages.Manage;
 using Microsoft.AspNetCore.Authentication;

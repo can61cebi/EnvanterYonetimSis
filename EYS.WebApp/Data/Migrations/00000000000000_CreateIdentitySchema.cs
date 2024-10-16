@@ -3,7 +3,7 @@ using System;
 
 #nullable disable
 
-namespace Blazor.KimlikDogrulamaOrnek.Migrations
+namespace EYS.WebApp.Migrations
 {
     /// <inheritdoc />
     public partial class CreateIdentitySchema : Migration
