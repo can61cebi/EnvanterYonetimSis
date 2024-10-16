@@ -1,5 +1,7 @@
 ﻿@page "/envanterduzenle/{EnvId:int}"
 
+@attribute [Authorize]
+
 @inject NavigationManager NavigationManager
 @inject IIDyeGoreEnvanterGoruntuleUseCase IDyeGoreEnvanterGoruntuleUseCase
 @inject IEnvanterDuzenleUseCase EnvanterDuzenleUseCase
