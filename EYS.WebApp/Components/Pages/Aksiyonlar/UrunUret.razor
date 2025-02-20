@@ -1,11 +1,13 @@
 ﻿@page "/uret"
 
+
 @attribute [Authorize]
 
 @rendermode InteractiveServer
 
 @using static EYS.WebApp.Components.Controls.Common.OtomatikTamamlaComponent
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
 
 @inject IIDyeGoreUrunGoruntuleUseCase IDyeGoreUrunGoruntuleUseCase
@@ -49,6 +51,13 @@
     private UretmeViewModel UretmeViewModel = new UretmeViewModel();
     private Urun? seciliUrun;
 
+    private AuthenticationState? girisDurumu;
+
+    protected override async Task OnInitializedAsync()
+    {
+        girisDurumu = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
@@ -78,11 +87,18 @@
 
     private async Task Uret()
     {
+        string kullaniciAdi = string.Empty;
+
+        if (girisDurumu?.User?.Identity?.IsAuthenticated ?? false)
+        {
+            kullaniciAdi = girisDurumu.User.Identity.Name ?? string.Empty;
+        }
+
             await UrunUretUseCase.ExecuteAsync(
             this.UretmeViewModel.uretmeSayisi,
             seciliUrun,
             this.UretmeViewModel.UretmeAdeti,
-            "Can"
+            kullaniciAdi
             );
      
             this.UretmeViewModel = new UretmeViewModel();

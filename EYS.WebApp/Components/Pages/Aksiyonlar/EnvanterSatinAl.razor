@@ -5,6 +5,7 @@
 
 @rendermode InteractiveServer
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
 
 @inject IIsmeGoreEnvanterleriGoruntuleUseCase IsmeGoreEnvanterleriGoruntuleUseCase
@@ -54,6 +55,13 @@
 
     private Envanter? seciliEnvanter = null;
 
+    private AuthenticationState? girisDurumu;
+
+    protected override async Task OnInitializedAsync()
+    {
+        girisDurumu = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
@@ -82,11 +90,18 @@
 
     private async Task Satinal()
     {
+        string kullaniciAdi = string.Empty;
+
+        if (girisDurumu?.User?.Identity?.IsAuthenticated ?? false)
+        {
+            kullaniciAdi = girisDurumu.User.Identity.Name ?? string.Empty;
+        }
+
             await EnvanterSatinAlUseCase.ExecuteAsync(
             this.SatinAlmaViewModel.almaSayisi,
             seciliEnvanter,
             this.SatinAlmaViewModel.SatinAlmaAdeti,
-            "Can"
+            kullaniciAdi
             );
      
             this.SatinAlmaViewModel = new SatinAlmaViewModel();

@@ -8,6 +8,8 @@
 
 @rendermode InteractiveServer
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
 @inject IJSRuntime JSRuntime
 
 @inject IIsmeGoreUrunleriGoruntuleUseCase IsmeGoreUrunleriGoruntuleUseCase
@@ -55,6 +57,13 @@
     private SatmaViewModel SatmaViewModel = new SatmaViewModel();
     private Urun? seciliUrun;
 
+    private AuthenticationState? girisDurumu;
+
+    protected override async Task OnInitializedAsync()
+    {
+        girisDurumu = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
@@ -84,12 +93,19 @@
 
     private async Task Sat()
     {
+        string kullaniciAdi = string.Empty;
+
+        if (girisDurumu?.User?.Identity?.IsAuthenticated ?? false)
+        {
+            kullaniciAdi = girisDurumu.User.Identity.Name ?? string.Empty;
+        }
+
         await UrunSatUseCase.ExecuteAsync(
             this.SatmaViewModel.SatisNumarasi,
             this.seciliUrun,
             this.SatmaViewModel.SatilacakAdet,
             this.SatmaViewModel.AdetFiyati,
-            "Can");
+            kullaniciAdi);
 
         this.SatmaViewModel = new SatmaViewModel();
         this.seciliUrun = null;
