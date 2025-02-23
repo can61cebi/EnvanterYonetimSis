@@ -1,0 +1,148 @@
+﻿@page "/Account/ManageUser/{userId}"
+@using EYS.WebApp.Data
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using System.ComponentModel.DataAnnotations
+
+@attribute [Authorize(Policy = "Admin")]
+
+@inject UserManager<ApplicationUser> UserManager
+@inject NavigationManager NavigationManager
+
+<h3>ManageUser</h3>
+<br />
+@if (viewModel is not null)
+{
+    <EditForm FormName="formManageUser" Model="viewModel" OnValidSubmit="SaveUser">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group">
+            <label for="email">Eposta</label>
+            <input id="email"
+                   type="text"
+                   class="form-control"
+                   readonly
+                   value="@viewModel.Email" />
+        </div>
+
+        <br />
+
+        <div class="form-group">
+            <label for="dp">Departman</label>
+            <InputSelect id="dp" @bind-Value="viewModel.Department" class="form-control">
+                @if (viewModel.Department == "Yonetici")
+                {
+                    <option value="Yonetici" selected>Yönetici</option>
+                }
+                else
+                {
+                    <option value="Yonetici">Yönetici</option>
+                }
+                @if (viewModel.Department == "EnvanterYonetimi")
+                {
+                    <option value="EnvanterYonetimi" selected>Envanter Yönetici</option>
+                }
+                else
+                {
+                    <option value="EnvanterYonetimi">Envanter Yönetici</option>
+                }
+                @if (viewModel.Department == "Satis")
+                {
+                    <option value="Satis" selected>Satışçı</option>
+                }
+                else
+                {
+                    <option value="Satis">Satışçı</option>
+                }
+                @if (viewModel.Department == "SatinAlim")
+                {
+                    <option value="SatinAlim" selected>Satın Almacı</option>
+                }
+                else
+                {
+                    <option value="SatinAlim">Satın Almacı</option>
+                }
+                @if (viewModel.Department == "UrunYonetimi")
+                {
+                    <option value="UrunYonetimi" selected>Ürün Yönetici</option>
+                }
+                else
+                {
+                    <option value="UrunYonetimi">Ürün Yönetici</option>
+                }
+            </InputSelect>
+
+            @viewModel.Department
+
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+        <a href="/account/manageusers" class="btn btn-primary">İptal Et</a>
+
+    </EditForm>
+}
+
+@code {
+
+    [Parameter]
+    public string? UserId { get; set; }
+
+    // Değişiklik yapıldı: "Department" yerine "Departman" kullanıldı.
+    private const string cstrDepartment = "Departman";
+
+    private ApplicationUser? user;
+    private Claim? departmentClaim;
+    private bool userHadDepartment = true;
+
+    [SupplyParameterFromForm]
+    private ManageUserViewModel? viewModel { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        user = UserManager.Users.First(x => x.Id == this.UserId);
+
+        var claims = await UserManager.GetClaimsAsync(user);
+
+        departmentClaim = claims.FirstOrDefault(x => x.Type == cstrDepartment);
+
+        if (departmentClaim is null)
+        {
+            userHadDepartment = false;
+            departmentClaim = new Claim(cstrDepartment, string.Empty);
+        }
+
+        viewModel ??= new ManageUserViewModel
+            {
+                Email = user.Email,
+                Department = departmentClaim.Value
+            };
+    }
+
+    private async Task SaveUser()
+    {
+        if (user is null || departmentClaim is null)
+            return;
+
+        if (userHadDepartment)
+        {
+            await UserManager.ReplaceClaimAsync(user, departmentClaim, new Claim(cstrDepartment, viewModel?.Department ?? string.Empty));
+        }
+        else
+        {
+            await UserManager.AddClaimAsync(user, new Claim(cstrDepartment, viewModel?.Department ?? string.Empty));
+        }
+
+        NavigationManager.NavigateTo("/account/manageusers");
+    }
+
+    public class ManageUserViewModel
+    {
+        public string? Email { get; set; }
+
+        [Required]
+        public string? Department { get; set; }
+    }
+}

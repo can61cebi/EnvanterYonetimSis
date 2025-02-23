@@ -23,7 +23,14 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireClaim("Departman", "Yonetici"));
+    options.AddPolicy("Inventory", policy => policy.RequireClaim("Departman", "EnvanterYonetimi"));
+    options.AddPolicy("Sales", policy => policy.RequireClaim("Departman", "Satis"));
+    options.AddPolicy("Purchasers", policy => policy.RequireClaim("Departman", "SatinAlim"));
+    options.AddPolicy("Productions", policy => policy.RequireClaim("Departman", "UrunYonetimi"));
+});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = IdentityConstants.ApplicationScheme;

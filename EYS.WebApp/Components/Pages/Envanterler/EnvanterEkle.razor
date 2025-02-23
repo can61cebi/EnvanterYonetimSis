@@ -1,6 +1,6 @@
 ﻿@page "/envanterekle"
 
-@attribute [Authorize]
+@attribute [Authorize(Policy = "Inventory")]
 
 @inject IEnvanterEkleUseCase EnvanterEkleUseCase;
 @inject NavigationManager NavigationManager

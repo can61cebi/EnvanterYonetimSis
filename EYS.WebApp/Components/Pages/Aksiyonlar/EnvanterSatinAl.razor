@@ -1,7 +1,7 @@
 ﻿@page "/satinal"
 @using static EYS.WebApp.Components.Controls.Common.OtomatikTamamlaComponent
 
-@attribute [Authorize]
+@attribute [Authorize(Policy = "Purchasers")]
 
 @rendermode InteractiveServer
 

@@ -1,6 +1,6 @@
 ﻿@page "/envanterler"
 
-@attribute [Authorize]
+@attribute [Authorize(Policy = "Inventory")]
 
 <h3>Envanter Listesi</h3>
 

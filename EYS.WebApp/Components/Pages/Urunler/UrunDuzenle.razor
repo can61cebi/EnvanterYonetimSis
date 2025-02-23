@@ -1,5 +1,7 @@
 ﻿@page "/urunduzenle/{Id:int}"
 
+@attribute [Authorize(Policy = "Inventory")]
+
 @rendermode InteractiveServer
 
 @inject NavigationManager NavigationManager;

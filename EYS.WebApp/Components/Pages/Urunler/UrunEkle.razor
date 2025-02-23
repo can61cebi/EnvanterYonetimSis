@@ -1,5 +1,7 @@
 ﻿@page "/urunekle"
 
+@attribute [Authorize(Policy = "Inventory")]
+
 @rendermode InteractiveServer
 
 @inject IUrunEkleUseCase UrunEkleUseCase;

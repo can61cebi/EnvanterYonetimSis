@@ -1,6 +1,6 @@
 ﻿@page "/urunler"
 
-@attribute [Authorize]
+@attribute [Authorize(Policy = "Inventory")]
 
 <h3>Urun Listesi</h3>
 

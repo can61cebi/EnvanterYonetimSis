@@ -1,6 +1,6 @@
 ﻿@page "/envanterduzenle/{EnvId:int}"
 
-@attribute [Authorize]
+@attribute [Authorize(Policy = "Inventory")]
 
 @inject NavigationManager NavigationManager
 @inject IIDyeGoreEnvanterGoruntuleUseCase IDyeGoreEnvanterGoruntuleUseCase
